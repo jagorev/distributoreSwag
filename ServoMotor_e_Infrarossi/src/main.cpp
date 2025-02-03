@@ -7,7 +7,7 @@ static const int ANALOG_PIN = 12;
 Servo servo1;
 
 int analogValue();
-int accendiServo();
+void accendiServo();
 
 void setup() {
 
@@ -26,14 +26,14 @@ void loop() {
   }
 }
 
-int accendiServo(){
-  for(int posDegrees = 45; posDegrees <= 60; posDegrees++) {
+void accendiServo(){
+  for(int posDegrees = 20; posDegrees <= 120; posDegrees++) {
       servo1.write(posDegrees);
       //Serial.println(posDegrees);
       delay(10);
     }
 
-    for(int posDegrees = 60; posDegrees >= 45; posDegrees--) {
+    for(int posDegrees = 120; posDegrees >= 20; posDegrees--) {
       servo1.write(posDegrees);
       //Serial.println(posDegrees);
       delay(20);
