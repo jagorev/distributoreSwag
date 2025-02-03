@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
+//finalmente funziona
+
 static const int servoPin = 13;
 static const int ANALOG_PIN = 12;
 
