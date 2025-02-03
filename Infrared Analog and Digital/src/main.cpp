@@ -8,6 +8,8 @@ int lastState = HIGH;
 int currentState;
 int ledReady;
 
+//prova jago
+
 //function declarations here:
 int isLedReady();
 int buttonPressed();
