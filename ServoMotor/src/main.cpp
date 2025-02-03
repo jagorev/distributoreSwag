@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <ESP32Servo.h>
 
-static const int servoPin = 2;
+static const int servoPin = 13;
 
 Servo servo1;
 
@@ -12,13 +12,13 @@ void setup() {
 }
 
 void loop() {
-  for(int posDegrees = 0; posDegrees <= 180; posDegrees++) {
+  for(int posDegrees = 60; posDegrees <= 120; posDegrees++) {
     servo1.write(posDegrees);
     Serial.println(posDegrees);
-    delay(20);
+    delay(10);
   }
 
-  for(int posDegrees = 180; posDegrees >= 0; posDegrees--) {
+  for(int posDegrees = 120; posDegrees >= 60; posDegrees--) {
     servo1.write(posDegrees);
     Serial.println(posDegrees);
     delay(20);
