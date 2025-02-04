@@ -27,7 +27,7 @@ Ecco alcuni link utili per il progetto:
 Si è discusso inoltre della **suddivisione del lavoro** basandoci sulle sezioni del documento di funzionamento generale.
 
 
-## 📅 Recap 4/2/2025
+## 📅 Recap 3/2/2025
 
 Jago e Giulio si sono trovati per provare a vedere il funzionamento dei sensori vari (e mettere su GitHub i relativi codici pronti per essere usati), in particolare:
 
