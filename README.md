@@ -57,7 +57,7 @@ Ecco alcuni link utili per il progetto:
 Giulio e Jago si sono trovati per:
 - Test del funzionamento del **LED RGB** *(ne abbiamo solo uno, quindi occhio a non bruciarlo!)*
 - Valutazione dei sensori di prossimità: il **sensore a ultrasuoni** sembra molto più preciso di quello a infrarossi
-- Stesura del **documento di funzionamento generale** (`workflow.md`, ma è lo stesso che c'è [qui](https://github.com/renna3/distributoreSwag/edit/main/README.md#%EF%B8%8F-workflow-del-distributoreswag)), cercando di ripercorrere tutto il ciclo operativo del dispenser in stile macchina a stati
+- Stesura del **documento di funzionamento generale** (`workflow.md`, ma è lo stesso che c'è [qui](https://github.com/renna3/distributoreSwag/tree/main#%EF%B8%8F-workflow-del-distributoreswag)), cercando di ripercorrere tutto il ciclo operativo del dispenser in stile macchina a stati
 - Ricerca di informazioni sul **tipo di tappo** da utilizzare *(vedi link nella pagina principale della repository GitHub)*
 
 Si è discusso inoltre della **suddivisione del lavoro** basandoci sulle sezioni del documento di funzionamento generale.
