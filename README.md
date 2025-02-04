@@ -2,6 +2,12 @@
 
 Benvenuto nella repository del **Distributore Swag**! Questo progetto si occupa della gestione di un distributore d'acqua, controllato tramite un ESP32 e un servo motore.
 
+## ✅ To-Do List
+
+- [ ] Capire come gestire il flusso d'acqua
+- [ ] Capire come funziona bene il modulo WiFi
+- [ ] Dividerci il lavoro
+
 ## 📌 Cose Utili
 
 Ecco alcuni link utili per il progetto:
