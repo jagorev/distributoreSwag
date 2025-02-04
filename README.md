@@ -17,12 +17,47 @@ Ecco alcuni link utili per il progetto:
 - 🔗 **Guida HTTP ↔ ESP32:** [Leggi l'articolo](https://randomnerdtutorials.com/esp32-servo-motor-web-server-arduino-ide/)
 - ⚠️ **Come gestire gli interrupts:** [Leggi l'articolo](https://lastminuteengineers.com/handling-esp32-gpio-interrupts-tutorial/)
 
+
+## ⚙️ Workflow del DistributoreSwag
+
+#### 1. Stato di Pronto
+- Il sistema viene collegato e si entra nello stato di **pronto**.
+- Vengono effettuati i controlli generali: verifica che i sensori non abbiano ostacoli e che la parte WiFi sia pronta.
+- Il display mostrerà: **"PRONTO. COLLEGARSI AL WIFI SWAG"**.
+- **STATUS_LED:** 🔵 (BLU).
+
+#### 2. Connessione e Selezione Quantità
+- L'utente si collega al WiFi del distributore tramite il telefono e scannerizza il QR per accedere alla pagina locale del distributore.
+- Seleziona la quantità di acqua da erogare (**0.2L, 0.33L, 0.5L, 1L**).
+- **STATUS_LED:** 🟣 (VIOLA) quando un dispositivo si connette.
+- **STATUS_LED:** 🟡 (GIALLO) quando la scelta è stata effettuata.
+
+#### 3. Controllo della Borraccia ed Erogazione
+- Il sensore di prossimità verifica se la borraccia è posizionata correttamente.
+- Se la borraccia è inserita e alla giusta distanza, inizia l'erogazione e **STATUS_LED sarà 🟢 (VERDE)**.
+- Se la borraccia viene rimossa durante l'erogazione:
+  - **STATUS_LED sarà 🟡 (GIALLO)**.
+  - Il sistema si ricorderà il livello di erogazione e riprenderà quando la borraccia sarà di nuovo in posizione.
+
+#### 4. Fine del Processo
+- **Scenario 1:**
+  - L'acqua è stata erogata correttamente.
+  - Il display mostrerà **"FINITO"** e il buzzer suonerà.
+  - Il sistema tornerà allo **stato 1**.
+- **Scenario 2:**
+  - L'utente preme il pulsante **STOP**.
+  - Il sistema si interrompe immediatamente, indipendentemente dallo stato attuale.
+  - Il display mostrerà **"RESET"** e **STATUS_LED sarà 🔴 (ROSSO) per qualche secondo**.
+  - Il sistema tornerà allo **stato 1**.
+
+
+
 ## 📅 Recap 4/2/2025
 
 Giulio e Jago si sono trovati per:
 - Test del funzionamento del **LED RGB** *(ne abbiamo solo uno, quindi occhio a non bruciarlo!)*
 - Valutazione dei sensori di prossimità: il **sensore a ultrasuoni** sembra molto più preciso di quello a infrarossi
-- Stesura del **documento di funzionamento generale** (`workflow.txt`), cercando di ripercorrere tutto il ciclo operativo del dispenser in stile macchina a stati
+- Stesura del **documento di funzionamento generale** (`workflow.md`, ma è lo stesso che c'è [qui](https://github.com/renna3/distributoreSwag/edit/main/README.md#%EF%B8%8F-workflow-del-distributoreswag)), cercando di ripercorrere tutto il ciclo operativo del dispenser in stile macchina a stati
 - Ricerca di informazioni sul **tipo di tappo** da utilizzare *(vedi link nella pagina principale della repository GitHub)*
 
 Si è discusso inoltre della **suddivisione del lavoro** basandoci sulle sezioni del documento di funzionamento generale.
