@@ -1,6 +1,12 @@
-# distributoreSwag
-Ecco la repository swag
+# 🛍️ DistributoreSwag
 
-### COSE UTILI:
--LINK collegamnto tappo servo:https://youtube.com/shorts/zqRdKZO0uKs?si=BICFTURyKTcm-0fA
--Link HTTP<->ESP: https://randomnerdtutorials.com/esp32-servo-motor-web-server-arduino-ide/
+Benvenuto nella repository del **Distributore Swag**! Questo progetto si occupa della gestione di un distributore d'acqua, controllato tramite un ESP32 e un servo motore.
+
+## 📌 Cose Utili
+
+Ecco alcuni link utili per il progetto:
+
+- 🎥 **Collegamento tappo servo:** [Guarda il video](https://youtube.com/shorts/zqRdKZO0uKs?si=BICFTURyKTcm-0fA)
+- 🔗 **Guida HTTP ↔ ESP32:** [Leggi l'articolo](https://randomnerdtutorials.com/esp32-servo-motor-web-server-arduino-ide/)
+
+
