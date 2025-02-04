@@ -4,8 +4,8 @@ Benvenuto nella repository del **Distributore Swag**! Questo progetto si occupa 
 
 ## ✅ To-Do List
 
-- [ ] Trovare il tappo necessario o individuare una soluzione alternativa *(es. utilizzo di una pompa, taglio diagonale di un tubo con regolazione del flusso tramite foglio di plastica trasparente)*
-- [ ] Capire come funziona bene il modulo WiFi, inclusi HTTP e protocolli di comunicazione
+- [ ] Trovare il tappo necessario o individuare una soluzione alternativa *(es. utilizzo di una pompa, taglio diagonale di un tubo con regolazione del flusso tramite foglio di plastica trasparente, ...)*
+- [ ] Capire bene come funziona il modulo WiFi, inclusi HTTP e protocolli di comunicazione
 - [ ] Iniziare a progettare la realizzazione pratica del sistema
 - [ ] Dividerci il lavoro nella pratica
 
