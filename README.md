@@ -19,6 +19,7 @@ Ecco alcuni link utili per il progetto:
 
 ## 📅 Recap 4/2/2025
 
+Giulio e Jago si sono trovati per:
 - Test del funzionamento del **LED RGB** *(ne abbiamo solo uno, quindi occhio a non bruciarlo!)*
 - Valutazione dei sensori di prossimità: il **sensore a ultrasuoni** sembra molto più preciso di quello a infrarossi
 - Stesura del **documento di funzionamento generale** (`workflow.txt`), cercando di ripercorrere tutto il ciclo operativo del dispenser in stile macchina a stati
