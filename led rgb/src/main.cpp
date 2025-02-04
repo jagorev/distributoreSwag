@@ -1,6 +1,3 @@
-
-#include <ESP32Servo.h>
-
 /**
 * Source code:
 * https://www.italiantechproject.it/tutorial-arduino/led-rgb
