@@ -1,0 +1,22 @@
+1. 
+Il sistema viene collegato e si entra nello stato di pronto.
+Vengono effettuati i controlli generali (che i sensori non abbiano nulla in mezzo e che la parte wifi sia pronta).
+Alla fine il display mostrerà qualcosa del tipo "PRONTO. COLLEGARSI AL WIFI SWAG".
+Lo STATUS_LED sarà BLU.
+
+2.
+Dal telefono, la persona si collega al wifi del distributore e scannerizza il QR che la porterà alla pagina del distributore (locale).
+L'utente selezionerà quanta acqua erogare (0.33, 0.5, 1, 0.2).
+Lo STATUS_LED sarà VIOLA quando un dispositivo si connette.
+Lo STATUS_LED sarà GIALLO quando la scelta sarà stata effettuata.
+
+3. 
+Il sensore di prossimità inizierà a controllare se la borraccia è inserita:
+se è inserita ed è ad una distanza coerente, allora inizia ad erogare acqua e Lo STATUS_LED sarà VERDE.
+Se la borraccia viene tolta durante l'erogazione, allora lo STATUS_LED sarà GIALLO e il sistema si ricorderà fino a dove è arrivato e riprenderà quando la borraccia sarà nuovamente ad una distanza corretta.
+
+4. 
+Abbiamo due scenari:
+- L'acqua viene erogata del tutto (correttamente) e quindi nel display esce la scritta "FINITO", il buzzer suona e si tornerà allo stato 1.
+- L'utente preme il pulsante di STOP, il sistema si interrompe (qualsiasi cosa stia facendo: versando oppure aspettando la borraccia) e si torna comunque allo stato 1. Nel display uscirà la scritta RESET e lo STATUS_LED sarà ROSSO per qualche secondo.
+
