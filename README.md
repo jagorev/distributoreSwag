@@ -4,7 +4,7 @@ Benvenuto nella repository del **Distributore Swag**! Questo progetto si occupa 
 
 ## ✅ To-Do List
 
-- [ ] Capire come gestire il flusso d'acqua
+- [ ] Capire come gestire il flusso d'acqua (trovare la merda di tappinooooo)
 - [ ] Capire come funziona bene il modulo WiFi
 - [ ] Dividerci il lavoro
 
