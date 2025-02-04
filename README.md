@@ -12,7 +12,7 @@ Benvenuto nella repository del **Distributore Swag**! Questo progetto si occupa 
 
 Ecco alcuni link utili per il progetto:
 
-- 🎥 **Collegamento tappo servo:** [Guarda il video](https://youtu.be/ywjtrN_QuFI) [Guarda il video](https://www.youtube.com/shorts/YKhZU1_dNQs)
+- 🎥 **Collegamento tappo servo:** [Guarda il video](https://youtu.be/ywjtrN_QuFI) [Guarda il video](https://www.youtube.com/shorts/YKhZU1_dNQs) [Ricerca Amazon](https://www.amazon.it/s?k=tappo+erogatore+tanica&__mk_it_IT=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=3QHH02E7DG4O3&sprefix=tappo+erogatore+tanic%2Caps%2C174&ref=nb_sb_noss_2)
 - 🔗 **Guida HTTP ↔ ESP32:** [Leggi l'articolo](https://randomnerdtutorials.com/esp32-servo-motor-web-server-arduino-ide/)
 - ⚠️ **Come gestire gli interrupts:** [Leggi l'articolo](https://lastminuteengineers.com/handling-esp32-gpio-interrupts-tutorial/)
 
