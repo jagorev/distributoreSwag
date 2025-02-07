@@ -7,8 +7,11 @@ Benvenuto nella repository del **Distributore Swag**! Questo progetto si occupa 
 - [ ] Trovare il tappo necessario o individuare una soluzione alternativa *(es. utilizzo di una pompa, taglio diagonale di un tubo con regolazione del flusso tramite foglio di plastica trasparente, ...)*
 - [ ] Capire bene come funziona il modulo WiFi, inclusi HTTP e protocolli di comunicazione
 - [ ] Capire come gestire gli interrupt con ESP32
-- [ ] Iniziare a progettare la realizzazione pratica del sistema
-- [ ] Dividerci il lavoro nella pratica
+- [x] Iniziare a progettare la realizzazione pratica del sistema
+- [x] Dividerci il lavoro nella pratica
+
+## ✏️ Schema
+<img src="Schema.png" alt="Alt text" width="300">
 
 ## 📌 Cose Utili
 
