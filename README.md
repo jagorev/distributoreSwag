@@ -10,6 +10,9 @@ Benvenuto nella repository del **Distributore Swag**! Questo progetto si occupa 
 - [ ] Iniziare a progettare la realizzazione pratica del sistema
 - [ ] Dividerci il lavoro nella pratica
 
+## ✏️ Schema
+<img src="Schema.png" alt="Alt text" width="300">
+
 ## 📌 Cose Utili
 
 Ecco alcuni link utili per il progetto:
