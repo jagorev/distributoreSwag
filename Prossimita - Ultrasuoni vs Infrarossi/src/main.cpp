@@ -47,7 +47,7 @@ void loop() {
   Serial.print(distance_cm);
   Serial.println(" cm");
 
-  delay(500);
+  delay(100);
 
   //INFRAROSSI -----------------
   analogValue();
