@@ -8,7 +8,7 @@
 
 // Replace with your network credentials
 const char* ssid     = "ESP32-Access-Point";
-const char* password = "123456789";
+const char* password = NULL;
 
 // Set web server port number to 80
 WiFiServer server(80);
@@ -36,7 +36,7 @@ void setup() {
   // Connect to Wi-Fi network with SSID and password
   Serial.print("Setting AP (Access Point)…");
   // Remove the password parameter, if you want the AP (Access Point) to be open
-  WiFi.softAP(ssid, password);
+  WiFi.softAP(ssid, password, 1, 0, 1);
 
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
