@@ -6,6 +6,9 @@
 DNSServer dnsServer;
 AsyncWebServer server(80);
 
+const char* ssid = "distributoreSwag";
+const char* password = NULL;
+
 String user_name;
 String proficiency;
 bool name_received = false;
@@ -37,26 +40,32 @@ public:
   CaptiveRequestHandler() {}
   virtual ~CaptiveRequestHandler() {}
 
+  //ritorna true se la richiesta può essere gestita da questo gestore (sempre)
   bool canHandle(AsyncWebServerRequest *request){
     //request->addInterestingHeader("ANY");
     return true;
   }
 
+  //è quella parte di programma che effettivamente manda ciò che verrà aperto dal captive portal (ossia index_html)
   void handleRequest(AsyncWebServerRequest *request) {
     request->send_P(200, "text/html", index_html); 
   }
 };
 
 void setupServer(){
+  //in caso di richiesta di apertura della root page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
       request->send_P(200, "text/html", index_html); 
       Serial.println("Client Connected");
   });
     
+  //in caso di form submission
   server.on("/get", HTTP_GET, [] (AsyncWebServerRequest *request) {
       String inputMessage;
       String inputParam;
   
+      //nota che i parametri sono quelli che sono stati nominati nella parte HTML
+      //quindi, devo fare riferimento ai loro nomi per estrarli
       if (request->hasParam("name")) {
         inputMessage = request->getParam("name")->value();
         inputParam = "name";
@@ -83,7 +92,7 @@ void setup(){
   Serial.println();
   Serial.println("Setting up AP Mode");
   WiFi.mode(WIFI_AP); 
-  WiFi.softAP("esp-captive");
+  WiFi.softAP(ssid, password, 1, 0, 1);
   Serial.print("AP IP address: ");Serial.println(WiFi.softAPIP());
   Serial.println("Setting up Async WebServer");
   setupServer();
