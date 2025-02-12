@@ -90,15 +90,26 @@ void setup(){
   //your other setup stuff...
   Serial.begin(115200);
   Serial.println();
+
+  // Initialize the output variables as outputs
+  pinMode(output26, OUTPUT);
+  pinMode(output27, OUTPUT);
+  // Set outputs to LOW
+  digitalWrite(output26, LOW);
+  digitalWrite(output27, LOW);
+
   Serial.println("Setting up AP Mode");
   WiFi.mode(WIFI_AP); 
   WiFi.softAP(ssid, password, 1, 0, 1);
   Serial.print("AP IP address: ");Serial.println(WiFi.softAPIP());
+
   Serial.println("Setting up Async WebServer");
   setupServer();
+
   Serial.println("Starting DNS Server");
   dnsServer.start(53, "*", WiFi.softAPIP());
   server.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER);//only when requested from AP
+  
   //more handlers...
   server.begin();
   Serial.println("All Done!");

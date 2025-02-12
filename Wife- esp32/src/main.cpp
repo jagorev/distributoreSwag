@@ -67,8 +67,8 @@ void loop(){
             client.println("Connection: close");
             client.println();
             
-            // turns the GPIOs on and off
-            if (header.indexOf("GET /26/on") >= 0) {
+            // turns the GPIOs on and off: if there is "GET /26/on" or "GET /26/off" in the request URL, it acts accordingly
+            if (header.indexOf("GET /26/on") >= 0) { 
               Serial.println("GPIO 26 on");
               output26State = "on";
               digitalWrite(output26, HIGH);
