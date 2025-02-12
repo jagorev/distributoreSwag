@@ -1,117 +1,54 @@
-/*
- * This ESP32 code is created by esp32io.com
- *
- * This ESP32 code is released in the public domain
- *
- * For more detail (instruction and wiring diagram), visit https://esp32io.com/tutorials/esp32-ultrasonic-sensor
- */
-
 #include <Arduino.h>
-#include <ServoMotor.h>
-#include <ESP32Servo.h>
+#define TRIG_PIN 4 // ESP32 pin GPIO23 connected to Ultrasonic Sensor's TRIG pin
+#define ECHO_PIN 16 // ESP32 pin GPIO22 connected to Ultrasonic Sensor's ECHO pin
+#define ANALOG_PIN 36 // ESP32 pin GPIO34 connected to Infrared Sensor's analog output pin
 
-
-// Definizione pin
-const int trigPin = 4;     // Pin trigger sensore ultrasuoni
-const int echoPin = 16;    // Pin echo sensore ultrasuoni
-const int servoPin = 13;   // Pin del servomotore
-const int redPin = 25;     // Pin LED RGB - Rosso
-const int greenPin = 26;   // Pin LED RGB - Verde
-const int bluePin = 27;    // Pin LED RGB - Blu
-
-// Variabili per la distanza
-const int minDistance = 5;  // Distanza minima in cm
-const int maxDistance = 15; // Distanza massima in cm
-
-bool erogazioneInCorso = false;
-float acquaErogata = 0.0; // Quantità d'acqua erogata in millilitri
-unsigned long tempoInizioErogazione = 0;
-const unsigned long timeoutRipresa = 5000; // 5 secondi per riposizionare la borraccia
-
-
+int analogValue();
 
 float duration_us, distance_cm;
-Servo servo;
 
 void setup() {
-    Serial.begin(115200);
-    pinMode(trigPin, OUTPUT);
-    pinMode(echoPin, INPUT);
-    pinMode(redPin, OUTPUT);
-    pinMode(greenPin, OUTPUT);
-    pinMode(bluePin, OUTPUT);
-    servo.attach(servoPin);
-    servo.write(0); // Valvola chiusa inizialmente
+  // begin serial port
+  Serial.begin (9600);
+
+  //ULTRASUONI -----------------
+
+  // configure the trigger pin to output mode
+  pinMode(TRIG_PIN, OUTPUT);
+  // configure the echo pin to input mode
+  pinMode(ECHO_PIN, INPUT);
 }
-
-float getDistance(float duration_us, float distance_cm) {
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
-
-  duration_us = pulseIn(echoPin, HIGH);
-  distance_cm = duration_us * 0.034 / 2; // Conversione in cm
-  return distance;
-}
-
-
-void setLEDColor(int r, int g, int b) {
-  analogWrite(redPin, r);
-  analogWrite(greenPin, g);
-  analogWrite(bluePin, b);
-}
-
-// Funzione di erogazione acqua
-void iniziaErogazione() {
-  erogazioneInCorso = true;
-  acquaErogata = 0.0;
-  tempoInizioErogazione = millis();
-  setLEDColor(0, 255, 0); // LED Verde
-  servo.write(90); // Posizione per apertura valvola
-}
-
-void interrompiErogazione() {
-  erogazioneInCorso = false;
-  setLED(255, 255, 0); // LED Giallo
-  servo.write(0); // Chiude l'erogatore
-}
-  
 
 void loop() {
-  float distance = getDistance();
-  Serial.print("Distanza rilevata: ");
-  Serial.print(distance);
+
+  //ULTRASUONI -----------------
+
+  // generate 10-microsecond pulse to TRIG pin
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  // measure duration of pulse from ECHO pin
+  duration_us = pulseIn(ECHO_PIN, HIGH);
+
+  // calculate the distance
+  distance_cm = 0.017 * duration_us;
+
+  // print the value to Serial Monitor
+  Serial.print("Ultrasuoni - distance: ");
+  Serial.print(distance_cm);
   Serial.println(" cm");
 
- 
-  if (!erogazioneInCorso && distance >= minDistance && distance <= maxDistance) {
-      Serial.println("Borraccia rilevata! Apertura valvola...");
-      iniziaErogazione();
-  }
+  delay(100);
 
-  if (erogazioneInCorso) {
-    acquaErogata += 0.5; // Supponiamo che ogni iterazione eroghi 0.5 ml
-    Serial.print("Acqua erogata: ");
-    Serial.print(acquaErogata);
-    Serial.println(" ml");
-  }
-
-    
-  if (erogazioneInCorso && (distance > maxDistance || distance < minDistance)) {
-    interrompiErogazione();
-    unsigned long tempoInterruzione = millis();
-    while ((millis() - tempoInterruzione) < timeoutRipresa) {
-        if (getDistance() >= minDistance && getDistance() <= maxDistance) {
-            iniziaErogazione();
-            break;
-        }
-    }
-  }
-
-  delay(500); // Piccola pausa per stabilità
+  //INFRAROSSI -----------------
+  analogValue();
 }
 
 
-
+int analogValue(){ //funzione per leggere il valore dell'ingresso analogico (sensore infrarossi)
+  int value = analogRead(ANALOG_PIN);
+  Serial.print("Infrarossi - value: ");
+  Serial.println(value);
+  return value;
+}
