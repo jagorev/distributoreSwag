@@ -167,6 +167,32 @@ void setup(){
 }
 
 void loop(){
+
+  if(scelta_effettuata){
+    if(distance > maxDistance || distance < minDistance){  //se la distanza è compresa tra questo range e la scelta è stata effettuata allora si può erogare 
+      switch (acqua_scelta)
+      {
+      case cl25:
+    
+        break;
+        case cl33:
+
+        break;
+        case cl50:
+
+        break;
+        
+        case l1:
+
+        break;
+      default:
+        break;
+      }
+    }
+}
+
+
+
   int clientCount = WiFi.softAPgetStationNum();
   Serial.println(clientCount);
   if(clientCount == 0){
