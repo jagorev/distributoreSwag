@@ -138,6 +138,43 @@ void setupServer(){
   });
 }
 
+bool erogazioneInCorso = false;
+float acquaErogata = 0.0; // Quantità d'acqua erogata in millilitri
+unsigned long tempoInizioErogazione = 0;
+const unsigned long timeoutRipresa = 5000; // 5 secondi per riposizionare la borraccia
+const int trigPin = 4;     // Pin trigger sensore ultrasuoni
+const int echoPin = 16;    // Pin echo sensore ultrasuoni
+const int servoPin = 13;   // Pin del servomotore
+const int redPin = 25;     // Pin LED RGB - Rosso
+const int greenPin = 26;   // Pin LED RGB - Verde
+const int bluePin = 27; 
+
+
+float getDistance(float duration_us, float distance_cm) {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration_us = pulseIn(echoPin, HIGH);
+  distance_cm = duration_us * 0.034 / 2; // Conversione in cm
+  return distance_cm;
+}
+void iniziaErogazione() {
+  erogazioneInCorso = true;
+  acquaErogata = 0.0;
+  tempoInizioErogazione = millis();
+  setLEDColor(0, 255, 0); // LED Verde
+  servo.write(90); // Posizione per apertura valvola
+}
+
+void interrompiErogazione() {
+  erogazioneInCorso = false;
+  setLEDColor(255, 255, 0); // LED Giallo
+  servo.write(0); // Chiude l'erogatore
+}
+
 
 void setup(){
   //your other setup stuff...
@@ -165,6 +202,8 @@ void setup(){
   server.begin();
   Serial.println("All Done!");
 }
+
+
 
 void loop(){
 
