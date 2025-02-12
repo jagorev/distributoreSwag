@@ -12,31 +12,78 @@ const char* password = NULL;
 // const int output26 = 26;
 // const int output27 = 27;
 
-String user_name;
-String proficiency;
+String risultato;
 bool name_received = false;
-bool proficiency_received = false;
 
 const char index_html[] PROGMEM = R"rawliteral(
-<!DOCTYPE HTML><html><head>
-  <title>Captive Portal Demo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head><body>
-  <h3>Captive Portal Demo</h3>
-  <br><br>
-  <form action="/get">
-    <br>
-    Name: <input type="text" name="name">
-    <br>
-    ESP32 Proficiency: 
-    <select name = "proficiency">
-      <option value=Beginner>Beginner</option>
-      <option value=Advanced>Advanced</option>
-      <option value=Pro>Pro</option>
-    </select>
-    <input type="submit" value="Submit">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My ESP32 Website</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        main {
+            width: 90%;
+            max-width: 600px;
+        }
+        .selectable {
+            height: 80px;
+            width: 80px;
+            margin: 10px;
+            font-size: 1em;
+            background-color: white;
+            border: 1px solid black;
+        }
+        #confirmButton {
+            height: 50px;
+            width: 100px;
+            display: block;
+            margin: 20px auto;
+        }
+        .selected {
+            background-color: lightblue;
+        }
+        @media (min-width: 768px) {
+            .selectable {
+                height: 100px;
+                width: 100px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+<form action="/get">
+    <header>
+        <h1 style="text-align: center; color: blue;">DISTRIBUTORE DI ACQUA SWAG</h1>
+    </header>
+    <main>
+        <div style="text-align: center;">
+            <button type="submit" name="bottle" value="33">33CL</button>
+            <button type="submit" name="bottle" value="50">50CL</button>
+            <button type="submit" name="bottle" value="1">1L</button>
+        </div>
+        <div>
+        </div>
+        <div id="bottle-container" style="text-align: center; margin-top: 20px;"></div>
+    </main>
+    <footer>
+    </footer>
   </form>
-</body></html>)rawliteral";
+</body>
+</html>
+)rawliteral";
 
 class CaptiveRequestHandler : public AsyncWebHandler {
 public:
@@ -60,32 +107,25 @@ void setupServer(){
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
       request->send_P(200, "text/html", index_html); 
       Serial.println("Client Connected");
+      Serial.print("Hello ");Serial.println(risultato);
   });
     
   //in caso di form submission
   server.on("/get", HTTP_GET, [] (AsyncWebServerRequest *request) {
       String inputMessage;
       String inputParam;
-      Serial.println("URL: " + request->url());
   
       //nota che i parametri sono quelli che sono stati nominati nella parte HTML
       //quindi, devo fare riferimento ai loro nomi per estrarli
-      if (request->hasParam("name")) {
-        inputMessage = request->getParam("name")->value();
-        inputParam = "name";
-        user_name = inputMessage;
+      if (request->hasParam("bottle")) {
+        inputMessage = request->getParam("bottle")->value();
+        inputParam = "bottle";
+        risultato = inputMessage;
         Serial.println(inputMessage);
         name_received = true;
       }
 
-      if (request->hasParam("proficiency")) {
-        inputMessage = request->getParam("proficiency")->value();
-        inputParam = "proficiency";
-        proficiency = inputMessage;
-        Serial.println(inputMessage);
-        proficiency_received = true;
-      }
-      request->send(200, "text/html", "The values entered by you have been successfully sent to the device <br><a href=\"/\">Return to Home Page</a>");
+      request->send(200, "text/html", "Inserisci la bottiglia <br><a href=\"/\">Return to Home Page</a>");
   });
 }
 
@@ -121,11 +161,9 @@ void setup(){
 
 void loop(){
   dnsServer.processNextRequest();
-  if(name_received && proficiency_received){
-      Serial.print("Hello ");Serial.println(user_name);
-      Serial.print("You have stated your proficiency to be ");Serial.println(proficiency);
+  if(name_received){
+      Serial.print("Size: ");Serial.println(risultato);
       name_received = false;
-      proficiency_received = false;
       Serial.println("We'll wait for the next client now");
     }
 }
