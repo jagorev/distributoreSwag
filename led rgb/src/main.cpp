@@ -3,9 +3,11 @@
 * https://www.italiantechproject.it/tutorial-arduino/led-rgb
 */
 
-int rossoPin = 22;
-int verdePin = 21;
-int bluPin = 23;
+#include <Arduino.h>
+
+int rossoPin = 40;
+int verdePin = 41;
+int bluPin = 42;
 
 void rgb(int rosso, int verde, int blu);
  

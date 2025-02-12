@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <AsyncTCP.h>
 #include "ESPAsyncWebServer.h"
+#include <Arduino.h>
 
 DNSServer dnsServer;
 AsyncWebServer server(80);
@@ -9,11 +10,13 @@ AsyncWebServer server(80);
 const char* ssid = "distributoreSwag";
 const char* password = NULL;
 
-// const int output26 = 26;
-// const int output27 = 27;
+//led RGB
+int rossoPin = 42;
+int verdePin = 41;
+int bluPin = 40;
 
 String risultato;
-bool name_received = false;
+bool scelta_effettuata = false;
 
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
@@ -85,6 +88,12 @@ const char index_html[] PROGMEM = R"rawliteral(
 </html>
 )rawliteral";
 
+void rgb(int rosso, int verde, int blu){
+  analogWrite(rossoPin, rosso);
+  analogWrite(verdePin, verde);
+  analogWrite(bluPin, blu);
+}
+
 class CaptiveRequestHandler : public AsyncWebHandler {
 public:
   CaptiveRequestHandler() {}
@@ -106,6 +115,7 @@ void setupServer(){
   //in caso di richiesta di apertura della root page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
       request->send_P(200, "text/html", index_html); 
+      scelta_effettuata=false;
       Serial.println("Client Connected");
       Serial.print("Hello ");Serial.println(risultato);
   });
@@ -122,9 +132,9 @@ void setupServer(){
         inputParam = "bottle";
         risultato = inputMessage;
         Serial.println(inputMessage);
-        name_received = true;
-      }
-
+        scelta_effettuata = true;
+      }   
+      delay(10);  
       request->send(200, "text/html", "Inserisci la bottiglia <br><a href=\"/\">Return to Home Page</a>");
   });
 }
@@ -136,11 +146,9 @@ void setup(){
   Serial.println();
 
   // // Initialize the output variables as outputs
-  // pinMode(output26, OUTPUT);
-  // pinMode(output27, OUTPUT);
-  // // Set outputs to LOW
-  // digitalWrite(output26, LOW);
-  // digitalWrite(output27, LOW);
+  pinMode(rossoPin, OUTPUT);
+  pinMode(verdePin, OUTPUT);
+  pinMode(bluPin, OUTPUT);
 
   Serial.println("Setting up AP Mode");
   WiFi.mode(WIFI_AP); 
@@ -156,14 +164,31 @@ void setup(){
   
   //more handlers...
   server.begin();
+  rgb(0, 0, 255);
   Serial.println("All Done!");
 }
 
 void loop(){
+  int clientCount = WiFi.softAPgetStationNum();
+  //Serial.println("Client connessi: ");
+  Serial.println(clientCount);
+  if(clientCount == 0){
+    rgb(0, 0, 255);
+    delay(10);
+    Serial.println("No clients connected");
+    scelta_effettuata = false;
+  }
+  else if(!scelta_effettuata){
+    rgb(255, 0, 255);
+    delay(10);
+    //Serial.println("Clients connected");
+  }
   dnsServer.processNextRequest();
-  if(name_received){
+  if(scelta_effettuata){
+    rgb(255, 255, 0);
+    delay(10);
       Serial.print("Size: ");Serial.println(risultato);
-      name_received = false;
       Serial.println("We'll wait for the next client now");
-    }
+  }
+  
 }
