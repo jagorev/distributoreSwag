@@ -113,30 +113,5 @@ void loop() {
   delay(500); // Piccola pausa per stabilità
 }
 
-/* void loop() {
-
-  //ULTRASUONI -----------------
-
-  // generate 10-microsecond pulse to TRIG pin
-  digitalWrite(TRIG_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG_PIN, LOW);
-
-  // measure duration of pulse from ECHO pin
-  duration_us = pulseIn(ECHO_PIN, HIGH);
-
-  // calculate the distance
-  distance_cm = 0.017 * duration_us;
-
-  // print the value to Serial Monitor
-  Serial.print("Ultrasuoni - distance: ");
-  Serial.print(distance_cm);
-  Serial.println(" cm");
-
-  delay(500);
-
-
-}
-*/
 
 
