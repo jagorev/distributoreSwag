@@ -119,7 +119,6 @@ void setupServer(){
       request->send_P(200, "text/html", index_html); 
       scelta_effettuata=false;
       Serial.println("Client Connected");
-      Serial.print("Hello ");Serial.println(risultato);
   });
     
   //in caso di form submission
