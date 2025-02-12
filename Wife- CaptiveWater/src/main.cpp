@@ -182,7 +182,7 @@ void loop(){
   if(scelta_effettuata){
     rgb(255, 255, 0);
     delay(10);
-      Serial.print("Size: ");Serial.println(risultato);
+      Serial.print("Size: ");Serial.println(acqua_scelta);
       Serial.println("We'll wait for the next client now");
   }
   
