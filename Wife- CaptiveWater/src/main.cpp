@@ -9,14 +9,15 @@ AsyncWebServer server(80);
 
 const char* ssid = "distributoreSwag";
 const char* password = NULL;
+enum AcquaSize {cl25, cl33, cl50, l1};
 
 //led RGB
 int rossoPin = 42;
 int verdePin = 41;
 int bluPin = 40;
 
-String risultato;
 bool scelta_effettuata = false;
+AcquaSize acqua_scelta;
 
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
@@ -73,9 +74,10 @@ const char index_html[] PROGMEM = R"rawliteral(
     </header>
     <main>
         <div style="text-align: center;">
-            <button type="submit" name="bottle" value="33">33CL</button>
-            <button type="submit" name="bottle" value="50">50CL</button>
-            <button type="submit" name="bottle" value="1">1L</button>
+            <button type="submit" name="bottle" value="0">25</button>
+            <button type="submit" name="bottle" value="1">33CL</button>
+            <button type="submit" name="bottle" value="2">50CL</button>
+            <button type="submit" name="bottle" value="3">1L</button>
         </div>
         <div>
         </div>
@@ -124,13 +126,12 @@ void setupServer(){
   server.on("/get", HTTP_GET, [] (AsyncWebServerRequest *request) {
       String inputMessage;
       String inputParam;
-  
       //nota che i parametri sono quelli che sono stati nominati nella parte HTML
       //quindi, devo fare riferimento ai loro nomi per estrarli
       if (request->hasParam("bottle")) {
         inputMessage = request->getParam("bottle")->value();
         inputParam = "bottle";
-        risultato = inputMessage;
+        acqua_scelta = (AcquaSize)inputMessage.toInt();
         Serial.println(inputMessage);
         scelta_effettuata = true;
       }   
