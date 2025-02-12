@@ -134,7 +134,6 @@ void setupServer(){
         Serial.println(inputMessage);
         scelta_effettuata = true;
       }   
-      delay(10);  
       request->send(200, "text/html", "Inserisci la bottiglia <br><a href=\"/\">Return to Home Page</a>");
   });
 }
@@ -164,24 +163,20 @@ void setup(){
   
   //more handlers...
   server.begin();
-  rgb(0, 0, 255);
   Serial.println("All Done!");
 }
 
 void loop(){
   int clientCount = WiFi.softAPgetStationNum();
-  //Serial.println("Client connessi: ");
   Serial.println(clientCount);
   if(clientCount == 0){
     rgb(0, 0, 255);
     delay(10);
-    Serial.println("No clients connected");
     scelta_effettuata = false;
   }
   else if(!scelta_effettuata){
     rgb(255, 0, 255);
     delay(10);
-    //Serial.println("Clients connected");
   }
   dnsServer.processNextRequest();
   if(scelta_effettuata){
