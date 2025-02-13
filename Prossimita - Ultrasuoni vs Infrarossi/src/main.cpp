@@ -1,11 +1,3 @@
-/*
- * This ESP32 code is created by esp32io.com
- *
- * This ESP32 code is released in the public domain
- *
- * For more detail (instruction and wiring diagram), visit https://esp32io.com/tutorials/esp32-ultrasonic-sensor
- */
-
 #include <Arduino.h>
 #define TRIG_PIN 4 // ESP32 pin GPIO23 connected to Ultrasonic Sensor's TRIG pin
 #define ECHO_PIN 16 // ESP32 pin GPIO22 connected to Ultrasonic Sensor's ECHO pin
