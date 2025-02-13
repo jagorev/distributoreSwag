@@ -10,6 +10,8 @@ AsyncWebServer server(80);
 
 const char* ssid = "distributoreSwag";
 const char* password = NULL;
+int oldClientCount = 0;
+
 enum AcquaSize {cl25, cl33, cl50, l1};
 
 //led RGB
@@ -110,11 +112,20 @@ void rgb(int rosso, int verde, int blu){
 //funzione display
 void scriviDisplay(String linea1, String linea2){
 
+  if(!old){
+   lcd.setCursor(0, 0); // Set the cursor to the first column, first row
+   lcd.print("                "); // Print message on the first row
+   lcd.setCursor(0, 1); // Set the cursor to the first column, first row
+   lcd.print("                "); // Print message on the first row
+   old=true;
+  }  
+
    lcd.setCursor(0, 0); // Set the cursor to the first column, first row
    lcd.print(linea1); // Print message on the first row
- 
    lcd.setCursor(0, 1); // Set the cursor to the first column, second row
    lcd.print(linea2); // Print message on the second row
+
+   
 }
 
 class CaptiveRequestHandler : public AsyncWebHandler {
@@ -139,7 +150,9 @@ void setupServer(){
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
       request->send_P(200, "text/html", index_html); 
       scelta_effettuata=false;
-      lcd.clear();
+      if(old){
+        old = false;
+      }
       Serial.println("Client Connected");
   });
     
@@ -155,7 +168,9 @@ void setupServer(){
         acqua_scelta = (AcquaSize)inputMessage.toInt();
         Serial.println(inputMessage);
         scelta_effettuata = true;
-        lcd.clear();
+        if(old){
+          old = false;
+        }
       }   
       request->send(200, "text/html", "Inserisci la bottiglia <br><a href=\"/\">Return to Home Page</a>");
   });
@@ -260,32 +275,29 @@ void loop(){
   // }
 
 
-
   int clientCount = WiFi.softAPgetStationNum();
   Serial.println(clientCount);
   if(clientCount == 0){
     rgb(0, 0, 255);
-    scriviDisplay("Pronto", "collegarsi");
+    scriviDisplay("Pronto                ", "collegarsi                ");
+    if(oldClientCount != 0){
+      old=false;
+      oldClientCount = clientCount;
+    }
     delay(10);
     scelta_effettuata = false;
-    
-    if(!old){
-      lcd.clear();
-      old=true;
-    }
   }
+  
   else if(!scelta_effettuata){
     rgb(255, 0, 255);
-    old=false;
     scriviDisplay("Connesso:", "scegli taglia");
-    delay(10);
+    delay(100);
   }
   dnsServer.processNextRequest();
   if(scelta_effettuata){
     rgb(255, 255, 0);
-    old=false;
     scriviDisplay("Inizia", "l'erogazione");
-    delay(10);
+    delay(100);
       Serial.print("Size: ");Serial.println(acqua_scelta);
       Serial.println("We'll wait for the next client now");
   }
