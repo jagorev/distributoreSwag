@@ -150,6 +150,7 @@ const int greenPin = 26;   // Pin LED RGB - Verde
 const int bluePin = 27; 
 
 
+
 float getDistance(float duration_us, float distance_cm) {
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
