@@ -1,0 +1,26 @@
+{
+    "authors": {
+        "name": "Daisuke Nakayama",
+        "url": "https://os.mbed.com/users/j_rocket_boy/"
+    },
+    "build": {
+        "builder": "MbedLibBuilder"
+    },
+    "description": "library for RC servo motor",
+    "examples": [
+        "https://os.mbed.com/users/j_rocket_boy/code/yagi_Rotator_Ver2/"
+    ],
+    "frameworks": "mbed",
+    "keywords": [
+        "motor",
+        "rc",
+        "servo"
+    ],
+    "name": "ServoMotor",
+    "platforms": "*",
+    "repository": {
+        "type": "hg",
+        "url": "https://os.mbed.com/users/j_rocket_boy/code/ServoMotor/"
+    },
+    "version": "0.0.0+sha.b46b05ed2f27"
+}

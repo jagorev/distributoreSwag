@@ -1,0 +1,23 @@
+{
+    "authors": {
+        "name": "NerfUS",
+        "url": "https://os.mbed.com/teams/NerfUS/"
+    },
+    "build": {
+        "builder": "MbedLibBuilder"
+    },
+    "description": "Servomotor",
+    "examples": [
+        "https://os.mbed.com/teams/NerfUS/code/ServomotorTests/",
+        "https://os.mbed.com/teams/NerfUS/code/NerfUSTarget/"
+    ],
+    "frameworks": "mbed",
+    "keywords": [],
+    "name": "Servomotor",
+    "platforms": "*",
+    "repository": {
+        "type": "hg",
+        "url": "https://os.mbed.com/teams/NerfUS/code/Servomotor/"
+    },
+    "version": "0.0.0+sha.e42a3a06e072"
+}
