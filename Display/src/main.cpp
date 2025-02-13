@@ -20,5 +20,5 @@ void loop() {
   lcd.print("Linea Sotto"); // Print message on the second row
   delay(1000); // Wait for 1 second
 
-  lcd.clear(); // Clear the display
+  //lcd.clear(); // Clear the display
 }
