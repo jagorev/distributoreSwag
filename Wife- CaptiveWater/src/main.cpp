@@ -129,22 +129,59 @@ void scriviDisplay(String linea1, String linea2){
   lcd.setCursor(0, 0); // Set the cursor to the first column, first row
   lcd.print(linea1); // Print message on the first row
   lcd.setCursor(0, 1); // Set the cursor to the first column, second row
-  lcd.print(linea2); // Print message on the second row
-
-   
+  lcd.print(linea2); // Print message on the second row 
 }
-void iniziaErogazione() {
+
+void apriServo(){
+  servo.attach(servoPin);
+  for(int posDegrees = 0; posDegrees <= servoAperto; posDegrees++) {
+    servo.write(posDegrees);
+    Serial.println(servo.read());
+    delay(5);
+  }
+  //servo.detach();
+}
+
+void chiudiServo(){
+  servo.attach(servoPin);
+  for(int posDegrees = servoAperto; posDegrees >= servoChiuso; posDegrees--) {
+    servo.write(posDegrees);
+    Serial.println(servo.read());
+    delay(5);
+  }
+  servo.detach();
+}
+
+void erogaErogazione() {
+  Serial.print("Erogazione in corso");
+  Serial.println(servo.read());
   erogazioneInCorso = true;
-  acquaErogata = 0.0;
+  //acquaErogata = 0.0;
   //tempoInizioErogazione = millis();
   rgb(0, 255, 0); // LED Verde
-  servo.write(90); // Posizione per apertura valvola
+  if(servo.read() < servoAperto-10){
+    apriServo(); // Posizione per apertura valvola
+    delay(50);
+  }
 }
 void interrompiErogazione() {
+  Serial.print("Erogazione non in corso");
+  Serial.println(servo.read());
   erogazioneInCorso = false;
   rgb(255, 255, 0); // LED Giallo
-  servo.write(0); // Chiude l'erogatore
+  if(servo.read() > servoChiuso+10){
+    chiudiServo(); // Chiude l'erogatore
+    delay(50);
+  }
 }
+
+// void riprendiErogazione(){
+//   erogazioneInCorso = true;
+//   rgb(0, 255, 0); // LED Verde
+//   if(servo.read() != servoAperto){
+//     apriServo(); // Posizione per apertura valvola
+//   }
+// }
 
 class CaptiveRequestHandler : public AsyncWebHandler {
 public:
@@ -244,8 +281,13 @@ void setup(){
   lcd.backlight(); // Turn on the LCD backlight
 
   //SET UP SERVO
-  servo.attach(servoPin);
-  servo.write(servoChiuso); // Valvola chiusa inizialmente
+  //servo.attach(servoPin);
+  //Serial.print("Servo read:");
+  /*servo.write(servoChiuso);
+  if(servo.read() != servoChiuso){
+    chiudiServo(); 
+  }*/
+  chiudiServo();
   
 }
 
@@ -278,7 +320,7 @@ void loop(){
 
 
   int clientCount = WiFi.softAPgetStationNum();
-  Serial.println(clientCount);
+  //Serial.println(clientCount);
   if(clientCount == 0){
     rgb(0, 0, 255);
     scriviDisplay("Pronto                ", "collegarsi                ");
@@ -291,26 +333,49 @@ void loop(){
     scriviDisplay("Connesso:                ", "scegli taglia                ");
     delay(100);
   }
+
   dnsServer.processNextRequest();
+
   if(scelta_effettuata){
-    //rgb(255, 255, 0);
-    interrompiErogazione();
-    scriviDisplay("Metti la                ", "borraccia                ");
-
-
-    
     float distance = getDistance();
-
-    while(!erogazioneInCorso && distance >= minDistance && distance <= maxDistance) {
-        Serial.println("Borraccia rilevata! Apertura valvola...");
-        scriviDisplay("Borraccia                 ", "rilevata                ");
-        iniziaErogazione(); // Valvola chiusa inizialmente
-        //rgb(0,255,0); //led verde
-        distance = getDistance();
+    if(distance >= minDistance && distance <= maxDistance){     
+      scriviDisplay("Borraccia                 ", "rilevata                ");
+      erogaErogazione();
     }
-      delay(100);
-      Serial.print("Size: ");Serial.println(acqua_scelta);
-      Serial.println("We'll wait for the next client now");
+    else if(distance <= minDistance || distance >= maxDistance){ 
+      scriviDisplay("Metti la                ", "borraccia                ");
+      interrompiErogazione();
+    }
+    else{
+      rgb(255, 255, 255);
+      scriviDisplay("Finita                ", "l'erogazione               ");
+      
+    }
+
+
+
+
+    // if(!erogazioneInCorso){
+    //   rgb(255, 255, 0);
+    //   scriviDisplay("Metti la                ", "borraccia                ");
+    // }
+    // Serial.println("Nel loop scelta_effettuata");
+    
+
+    // if(!erogazioneInCorso && distance >= minDistance && distance <= maxDistance) {
+    //     Serial.println("Borraccia rilevata! Apertura valvola...");
+    //     scriviDisplay("Borraccia                 ", "rilevata                ");
+    //     iniziaErogazione(); // Valvola chiusa inizialmente
+    //     //rgb(0,255,0); //led verde
+    // }
+    // if(erogazioneInCorso && distance <= minDistance && distance >= maxDistance){
+    //   scriviDisplay("Metti la                ", "borraccia                ");
+    //   interrompiErogazione();
+    // }
+    
+    //   delay(100);
+    //   Serial.print("Size: ");Serial.println(acqua_scelta);
+      //Serial.println("We'll wait for the next client now");
   }
 
  
