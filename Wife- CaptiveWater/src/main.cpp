@@ -4,6 +4,7 @@
 #include "ESPAsyncWebServer.h"
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
+#include <ESP32Servo.h>
 
 DNSServer dnsServer;
 AsyncWebServer server(80);
@@ -23,6 +24,21 @@ int lcdColumns = 16;
 int lcdRows = 2;
 // Create an LCD object with the I2C address, columns, and rows
 LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);
+
+//VARIABILI UTRASUONI 
+bool erogazioneInCorso = false;
+float acquaErogata = 0.0; // Quantità d'acqua erogata in millilitri
+unsigned long tempoInizioErogazione = 0;
+const unsigned long timeoutRipresa = 5000; // 5 secondi per riposizionare la borraccia
+const int trigPin = 5;     // Pin trigger sensore ultrasuoni
+const int echoPin = 4;    // Pin echo sensore ultrasuoni
+const int servoPin = 2;   // Pin del servomotore
+const float minDistance = 0.0;  // Distanza minima in cm
+const float maxDistance = 5.0; // Distanza massima in cm
+
+Servo servo;
+const int servoChiuso=0;
+const int servoAperto=90;
 
 
 bool scelta_effettuata = false;   
@@ -117,6 +133,18 @@ void scriviDisplay(String linea1, String linea2){
 
    
 }
+void iniziaErogazione() {
+  erogazioneInCorso = true;
+  acquaErogata = 0.0;
+  //tempoInizioErogazione = millis();
+  rgb(0, 255, 0); // LED Verde
+  servo.write(90); // Posizione per apertura valvola
+}
+void interrompiErogazione() {
+  erogazioneInCorso = false;
+  rgb(255, 255, 0); // LED Giallo
+  servo.write(0); // Chiude l'erogatore
+}
 
 class CaptiveRequestHandler : public AsyncWebHandler {
 public:
@@ -160,37 +188,23 @@ void setupServer(){
   });
 }
 
-// bool erogazioneInCorso = false;
-// float acquaErogata = 0.0; // Quantità d'acqua erogata in millilitri
-// unsigned long tempoInizioErogazione = 0;
-// const unsigned long timeoutRipresa = 5000; // 5 secondi per riposizionare la borraccia
-// const int trigPin = 4;     // Pin trigger sensore ultrasuoni
-// const int echoPin = 16;    // Pin echo sensore ultrasuoni
-// const int servoPin = 13;   // Pin del servomotore
-// const int redPin = 25;     // Pin LED RGB - Rosso
-// const int greenPin = 26;   // Pin LED RGB - Verde
-// const int bluePin = 27; 
 
 
 
-// float getDistance(float duration_us, float distance_cm) {
-//   digitalWrite(trigPin, LOW);
-//   delayMicroseconds(2);
-//   digitalWrite(trigPin, HIGH);
-//   delayMicroseconds(10);
-//   digitalWrite(trigPin, LOW);
+float getDistance() {
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
 
-//   duration_us = pulseIn(echoPin, HIGH);
-//   distance_cm = duration_us * 0.034 / 2; // Conversione in cm
-//   return distance_cm;
-// }
-// void iniziaErogazione() {
-//   erogazioneInCorso = true;
-//   acquaErogata = 0.0;
-//   tempoInizioErogazione = millis();
-//   setLEDColor(0, 255, 0); // LED Verde
-//   servo.write(90); // Posizione per apertura valvola
-// }
+  // measure duration of pulse from ECHO pin
+  int duration_us = pulseIn(echoPin, HIGH);
+  float distance_cm = duration_us * 0.034 / 2; // Conversione in cm
+  Serial.print("Distanza rilevata: ");
+  Serial.print(distance_cm);
+  Serial.println(" cm");
+  return distance_cm;
+}
+
 
 // void interrompiErogazione() {
 //   erogazioneInCorso = false;
@@ -205,9 +219,8 @@ void setup(){
   Serial.println();
 
   // // Initialize the output variables as outputs
-  pinMode(rossoPin, OUTPUT);
-  pinMode(verdePin, OUTPUT);
-  pinMode(bluPin, OUTPUT);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
 
   Serial.println("Setting up AP Mode");
   WiFi.mode(WIFI_AP); 
@@ -229,6 +242,11 @@ void setup(){
   //SET UP DISPLAY
   lcd.init(); // Initialize the LCD
   lcd.backlight(); // Turn on the LCD backlight
+
+  //SET UP SERVO
+  servo.attach(servoPin);
+  servo.write(servoChiuso); // Valvola chiusa inizialmente
+  
 }
 
 
@@ -275,9 +293,22 @@ void loop(){
   }
   dnsServer.processNextRequest();
   if(scelta_effettuata){
-    rgb(255, 255, 0);
+    //rgb(255, 255, 0);
+    interrompiErogazione();
     scriviDisplay("Metti la                ", "borraccia                ");
-    delay(100);
+
+
+    
+    float distance = getDistance();
+
+    while(!erogazioneInCorso && distance >= minDistance && distance <= maxDistance) {
+        Serial.println("Borraccia rilevata! Apertura valvola...");
+        scriviDisplay("Borraccia                 ", "rilevata                ");
+        iniziaErogazione(); // Valvola chiusa inizialmente
+        //rgb(0,255,0); //led verde
+        distance = getDistance();
+    }
+      delay(100);
       Serial.print("Size: ");Serial.println(acqua_scelta);
       Serial.println("We'll wait for the next client now");
   }

@@ -20,6 +20,9 @@ float acquaErogata = 0.0; // Quantità d'acqua erogata in millilitri
 unsigned long tempoInizioErogazione = 0;
 const unsigned long timeoutRipresa = 5000; // 5 secondi per riposizionare la borraccia
 
+int servoChiuso=0;
+int servoAperto=90;
+
 
 
 float duration_us, distance_cm;
@@ -33,27 +36,26 @@ void setup() {
     pinMode(greenPin, OUTPUT);
     pinMode(bluePin, OUTPUT);
     servo.attach(servoPin);
-    servo.write(0); // Valvola chiusa inizialmente
+    servo.write(servoChiuso); // Valvola chiusa inizialmente
 }
 
 float getDistance(float duration_us, float distance_cm) {
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
 
+  // measure duration of pulse from ECHO pin
   duration_us = pulseIn(echoPin, HIGH);
   distance_cm = duration_us * 0.034 / 2; // Conversione in cm
   return distance;
 }
 
 
-void setLEDColor(int r, int g, int b) {
-  analogWrite(redPin, r);
-  analogWrite(greenPin, g);
-  analogWrite(bluePin, b);
-}
+// void setLEDColor(int r, int g, int b) {
+//   analogWrite(redPin, r);
+//   analogWrite(greenPin, g);
+//   analogWrite(bluePin, b);
+// }
 
 // Funzione di erogazione acqua
 void iniziaErogazione() {
