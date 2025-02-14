@@ -45,6 +45,14 @@ bool scelta_effettuata = false;
 AcquaSize acqua_scelta;
 
 
+//dichiarazione timer
+int timerInizio = 0;
+int tempoPassato = 0;
+const int tempo_25cl=1000;
+const int tempo_33cl=1500;
+const int tempo_50cl=2000;
+const int tempo_1l=4000;
+
 
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
@@ -152,11 +160,58 @@ void chiudiServo(){
   servo.detach();
 }
 
+void erogazioneFinita(){
+  scriviDisplay("Finita                ", "l'erogazione               ");
+  erogazioneInCorso = false;
+  rgb(255, 255, 255);
+  delay(3000);
+  chiudiServo();
+  scelta_effettuata = false;
+  //FAR SUONARE BUZZER PER AVVISARE
+}
+
 void erogaErogazione() {
+  Serial.print("Acqua scelta:  ");
+  Serial.println(acqua_scelta);
+
+  tempoPassato = millis() - timerInizio;
+
+  //caso in cui parto dall'inizio
+  if(tempoPassato = 0){
+    timerInizio = millis();
+  }
+  else{
+    switch (acqua_scelta)
+    {
+    case cl25:
+      if(tempoPassato >= tempo_25cl){
+        erogazioneFinita();
+      }
+      break;
+    case cl33:
+      if(tempoPassato >= tempo_33cl){
+        erogazioneFinita();
+      }
+      break;
+    case cl50:
+      if(tempoPassato >= tempo_50cl){
+        erogazioneFinita();
+      }
+      break;
+    case l1:
+      if(tempoPassato >= tempo_1l){
+        erogazioneFinita();
+      }
+      break;
+    default:
+      break;
+    }
+  }
+
+
   Serial.print("Erogazione in corso");
   Serial.println(servo.read());
   erogazioneInCorso = true;
-  //acquaErogata = 0.0;
   //tempoInizioErogazione = millis();
   rgb(0, 255, 0); // LED Verde
   if(servo.read() < servoAperto-10){
@@ -174,6 +229,8 @@ void interrompiErogazione() {
     delay(50);
   }
 }
+
+
 
 // void riprendiErogazione(){
 //   erogazioneInCorso = true;
@@ -345,11 +402,6 @@ void loop(){
     else if(distance <= minDistance || distance >= maxDistance){ 
       scriviDisplay("Metti la                ", "borraccia                ");
       interrompiErogazione();
-    }
-    else{
-      rgb(255, 255, 255);
-      scriviDisplay("Finita                ", "l'erogazione               ");
-      
     }
 
 

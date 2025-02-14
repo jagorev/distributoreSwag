@@ -21,6 +21,11 @@ const unsigned long timeoutRipresa = 5000;
 float duration_us, distance_cm;
 Servo servo;
 
+//dichiarazioni timer
+
+
+
+
 void setup() {
     Serial.begin(115200);
     pinMode(trigPin, OUTPUT);
