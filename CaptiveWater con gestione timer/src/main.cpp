@@ -22,6 +22,12 @@ enum AcquaSize
   l1
 };
 
+//BUTTON
+const int button = 25;
+unsigned long button_time = 0;  
+unsigned long last_button_time = 0; 
+bool emergency_triggered = false;
+
 // led RGB
 int rossoPin = 19;
 int verdePin = 18;
@@ -131,6 +137,8 @@ const char index_html[] PROGMEM = R"rawliteral(
 </body>
 </html>
 )rawliteral";
+
+
 unsigned long int getElapsedTime();
 
 void startTimer()
@@ -211,11 +219,15 @@ void apriServo()
 void chiudiServo()
 {
   servo.attach(servoPin);
-  for (int posDegrees = servoAperto; posDegrees >= servoChiuso; posDegrees--)
-  {
-    servo.write(posDegrees);
-    Serial.println(servo.read());
-    delay(5);
+  if(!(servo.read() <= servoChiuso+10 && servo.read() >= servoChiuso-10)){
+    //se il servo non è chiuso
+    for (int posDegrees = servoAperto; posDegrees >= servoChiuso; posDegrees--)
+    {
+      servo.write(posDegrees);
+      Serial.println(servo.read());
+      delay(5);
+    }
+  
   }
   servo.detach();
 }
@@ -313,6 +325,15 @@ void interrompiErogazione()
   }
 }
 
+void IRAM_ATTR isr() {
+  button_time = millis();
+  if (button_time - last_button_time > 250)
+  {
+    emergency_triggered = true;
+    last_button_time = button_time;
+  }
+}
+
 class CaptiveRequestHandler : public AsyncWebHandler
 {
 public:
@@ -376,11 +397,10 @@ float getDistance()
 
 void setup()
 {
-
-  Serial.print("provaaaaaaaaaa");
   // your other setup stuff...
   Serial.begin(115200);
-  Serial.println();
+  pinMode(button, INPUT_PULLUP);
+	attachInterrupt(button, isr, FALLING);
 
   // // Initialize the output variables as outputs
   pinMode(trigPin, OUTPUT);
@@ -407,11 +427,24 @@ void setup()
   lcd.init();      // Initialize the LCD
   lcd.backlight(); // Turn on the LCD backlight
 
-  chiudiServo();
+  //chiudiServo();
 }
 
 void loop()
 {
+  if (emergency_triggered) {
+    emergency_triggered = false; // Reset flag
+    chiudiServo();
+    
+    scriviDisplay("Emergenza!                ", "Riavvio in corso...                ");
+    rgb(255, 0, 0);
+
+    // FAR SUONARE BUZZER PER AVVISARE
+    delay(5000);
+
+    // Riavvio ESP
+    esp_restart();
+  }
   int clientCount = WiFi.softAPgetStationNum();
   // Serial.println(clientCount);
   if (clientCount == 0)
