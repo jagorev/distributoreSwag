@@ -2,6 +2,12 @@
 
 Benvenuto nella repository del **Distributore Swag**! Questo progetto si occupa della gestione di un distributore d'acqua, controllato tramite un ESP32 e un servo motore.
 
+## 🔧 Cose da migliorare
+- [ ] Disconnettere i client automaticamente appena finisce l'erogazione (o c'è un'emergenza)
+- [ ] Capire come gestire dignitosamente la questione del famigerato valore 9086 del servomotore
+- [ ] Mettere più bevande
+- [ ] Mettere la visione "live" della percentuale d'acqua nel sito e diplay
+ 
 ## ✅ To-Do List
 
 - [x] Trovare il tappo necessario o individuare una soluzione alternativa *(es. utilizzo di una pompa, taglio diagonale di un tubo con regolazione del flusso tramite foglio di plastica trasparente, ...)*
