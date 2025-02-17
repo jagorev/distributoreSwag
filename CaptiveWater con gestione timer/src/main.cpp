@@ -5,9 +5,9 @@
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
 #include <ESP32Servo.h>
-// #include <avr/wdt.h>
 #include <esp_system.h>
-#include "pitches.h"
+#include "buzzer.h"
+#include "display.h"
 
 DNSServer dnsServer;
 AsyncWebServer server(80);
@@ -35,10 +35,7 @@ const int verdePin = 18;
 const int bluPin = 17;
 
 // DISPLAY
-const int lcdColumns = 16;
-const int lcdRows = 2;
-// Create an LCD object with the I2C address, columns, and rows
-LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);
+
 
 // VARIABILI UTRASUONI
 bool erogazioneInCorso = false;
@@ -67,13 +64,7 @@ unsigned long int elapsedTime = 0;
 bool timerRunning = false;
 
 //BUZZER
-const int buzzerPin = 16;
-const int melody[] = {
-  NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
-};
-const int noteDurations[] = {
-  4, 8, 8, 4, 4, 4, 4, 4
-};
+
 
 
 //SITO
@@ -256,16 +247,6 @@ void rgb(int rosso, int verde, int blu)
   analogWrite(bluPin, blu);
 }
 
-// funzione display
-void scriviDisplay(String linea1, String linea2)
-{
-
-  lcd.setCursor(0, 0); // Set the cursor to the first column, first row
-  lcd.print(linea1);   // Print message on the first row
-  lcd.setCursor(0, 1); // Set the cursor to the first column, second row
-  lcd.print(linea2);   // Print message on the second row
-}
-
 void apriServo()
 {
   servo.attach(servoPin);
@@ -401,27 +382,6 @@ void IRAM_ATTR isr() {
   }
 }
 
-void suonaBuzzerFelice(){
-  for (int thisNote = 0; thisNote < 8; thisNote++) {
-    int noteDuration = 1000 / noteDurations[thisNote];
-    tone(buzzerPin, melody[thisNote], noteDuration);
-
-    int pauseBetweenNotes = noteDuration * 1.30;
-    delay(pauseBetweenNotes);
-    noTone(buzzerPin);
-  }
-
-}
-void suonaBuzzerTriste() {
-  tone(buzzerPin, 880, 500);  // La5
-  delay(600);
-  tone(buzzerPin, 698, 500);  // Fa5
-  delay(600);
-  tone(buzzerPin, 523, 500);  // Do5
-  delay(600);
-  noTone(buzzerPin);          // Spegne il buzzer
-}
-
 class CaptiveRequestHandler : public AsyncWebHandler
 {
 public:
@@ -495,7 +455,7 @@ void setup()
   // // Initialize the output variables as outputs
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  pinMode(buzzerPin, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
 
   Serial.println("Setting up AP Mode");
   WiFi.mode(WIFI_AP);
