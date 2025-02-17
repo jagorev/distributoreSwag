@@ -7,6 +7,7 @@
 #include <ESP32Servo.h>
 // #include <avr/wdt.h>
 #include <esp_system.h>
+#include "pitches.h"
 
 DNSServer dnsServer;
 AsyncWebServer server(80);
@@ -29,13 +30,13 @@ unsigned long last_button_time = 0;
 bool emergency_triggered = false;
 
 // led RGB
-int rossoPin = 19;
-int verdePin = 18;
-int bluPin = 17;
+const int rossoPin = 19;
+const int verdePin = 18;
+const int bluPin = 17;
 
 // DISPLAY
-int lcdColumns = 16;
-int lcdRows = 2;
+const int lcdColumns = 16;
+const int lcdRows = 2;
 // Create an LCD object with the I2C address, columns, and rows
 LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);
 
@@ -61,12 +62,21 @@ const long int tempo_25cl = 10000;
 const long int tempo_33cl = 15000;
 const long int tempo_50cl = 20000;
 const long int tempo_1l = 40000;
-
 unsigned long int startTime;
 unsigned long int elapsedTime = 0;
-
 bool timerRunning = false;
 
+//BUZZER
+const int buzzerPin = 16;
+const int melody[] = {
+  NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
+};
+const int noteDurations[] = {
+  4, 8, 8, 4, 4, 4, 4, 4
+};
+
+
+//SITO
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
 <html lang="en">
@@ -74,72 +84,124 @@ const char index_html[] PROGMEM = R"rawliteral(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My ESP32 Website</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
             margin: 0;
-            font-family: Arial, sans-serif;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        main {
-            width: 90%;
-            max-width: 600px;
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
         }
-        .selectable {
-            height: 80px;
-            width: 80px;
+
+        h1 {
+            color: #0056b3;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
             margin: 10px;
-            font-size: 1em;
-            background-color: white;
-            border: 1px solid black;
+            background-color: #0072ff;
+            color: white;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
         }
-        #confirmButton {
-            height: 50px;
-            width: 100px;
-            display: block;
-            margin: 20px auto;
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
         }
-        .selected {
-            background-color: lightblue;
-        }
-        @media (min-width: 768px) {
-            .selectable {
-                height: 100px;
-                width: 100px;
-                font-size: 1.2em;
-            }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
-<form action="/get">
-    <header>
-        <h1 style="text-align: center; color: blue;">DISTRIBUTORE DI ACQUA SWAG</h1>
-    </header>
-    <main>
-        <div style="text-align: center;">
-            <button type="submit" name="bottle" value="0">25CL</button>
-            <button type="submit" name="bottle" value="1">33CL</button>
-            <button type="submit" name="bottle" value="2">50CL</button>
-            <button type="submit" name="bottle" value="3">1L</button>
-        </div>
-        <div>
-        </div>
-        <div id="bottle-container" style="text-align: center; margin-top: 20px;"></div>
-    </main>
-    <footer>
-    </footer>
-  </form>
+    <div class="container">
+        <h1>Swag Water Dispenser</h1>
+        <form action="/get">
+            <button type="submit" name="bottle" value="0">25 cl</button>
+            <button type="submit" name="bottle" value="1">33 cl</button>
+            <button type="submit" name="bottle" value="2">50 cl</button>
+            <button type="submit" name="bottle" value="3">100 cl</button>
+        </form>
+        <footer>
+            <p>&copy; Powered by DistributoreSwag</p>
+        </footer>
+    </div>
 </body>
 </html>
 )rawliteral";
 
+const char landing_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inserisci la Bottiglia</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #0056b3;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Insert the bottle</h1>
+    </div>
+</body>
+</html>
+
+)rawliteral";
+
 
 unsigned long int getElapsedTime();
+
+void refreshAP(){
+  WiFi.softAPdisconnect();
+  WiFi.softAP(ssid, password, random(1,12), 0, 1);
+}
 
 void startTimer()
 {
@@ -219,7 +281,9 @@ void apriServo()
 void chiudiServo()
 {
   servo.attach(servoPin);
-  if(!(servo.read() <= servoChiuso+10 && servo.read() >= servoChiuso-10)){
+  Serial.print("Il servo è a: ");
+  Serial.println(servo.read());
+  if(!(servo.read() <= servoChiuso+10 && servo.read() >= servoChiuso-10) && servo.read() != 9086){
     //se il servo non è chiuso
     for (int posDegrees = servoAperto; posDegrees >= servoChiuso; posDegrees--)
     {
@@ -241,6 +305,9 @@ void erogazioneFinita()
   // delay(3000);
   chiudiServo();
   scelta_effettuata = false;
+
+  //stacco i client connessi
+  refreshAP();
 
   // FAR SUONARE BUZZER PER AVVISARE
   delay(5000);
@@ -334,6 +401,27 @@ void IRAM_ATTR isr() {
   }
 }
 
+void suonaBuzzerFelice(){
+  for (int thisNote = 0; thisNote < 8; thisNote++) {
+    int noteDuration = 1000 / noteDurations[thisNote];
+    tone(buzzerPin, melody[thisNote], noteDuration);
+
+    int pauseBetweenNotes = noteDuration * 1.30;
+    delay(pauseBetweenNotes);
+    noTone(buzzerPin);
+  }
+
+}
+void suonaBuzzerTriste() {
+  tone(buzzerPin, 880, 500);  // La5
+  delay(600);
+  tone(buzzerPin, 698, 500);  // Fa5
+  delay(600);
+  tone(buzzerPin, 523, 500);  // Do5
+  delay(600);
+  noTone(buzzerPin);          // Spegne il buzzer
+}
+
 class CaptiveRequestHandler : public AsyncWebHandler
 {
 public:
@@ -377,7 +465,7 @@ void setupServer()
         Serial.println(inputMessage);
         scelta_effettuata = true;
       }   
-      request->send(200, "text/html", "Inserisci la bottiglia <br><a href=\"/\">Return to Home Page</a>"); });
+      request->send(200, "text/html", landing_html); });
 }
 
 float getDistance()
@@ -395,6 +483,8 @@ float getDistance()
   return distance_cm;
 }
 
+
+
 void setup()
 {
   // your other setup stuff...
@@ -405,10 +495,11 @@ void setup()
   // // Initialize the output variables as outputs
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
+  pinMode(buzzerPin, OUTPUT);
 
   Serial.println("Setting up AP Mode");
   WiFi.mode(WIFI_AP);
-  WiFi.softAP(ssid, password, 1, 0, 1);
+  WiFi.softAP(ssid, password, random(1,12), 0, 1);
   Serial.print("AP IP address: ");
   Serial.println(WiFi.softAPIP());
 
@@ -434,16 +525,18 @@ void loop()
 {
   if (emergency_triggered) {
     emergency_triggered = false; // Reset flag
-    chiudiServo();
-    
     scriviDisplay("Emergenza!                ", "Riavvio in corso...                ");
     rgb(255, 0, 0);
+    chiudiServo();
 
+    //stacco i client connessi
+    refreshAP();
     // FAR SUONARE BUZZER PER AVVISARE
     delay(5000);
 
     // Riavvio ESP
     esp_restart();
+    return;
   }
   int clientCount = WiFi.softAPgetStationNum();
   // Serial.println(clientCount);
