@@ -4,8 +4,8 @@
 #include <Arduino.h>
 #define BUZZER_PIN 16
 
-void suonaBuzzerFelice();
-void suonaBuzzerTriste();
+void playHappyBuzzer();
+void playSadBuzzer();
 
 
 #endif // BUZZER_H

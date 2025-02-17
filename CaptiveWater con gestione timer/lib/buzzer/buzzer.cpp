@@ -8,7 +8,7 @@ const int noteDurations[] = {
   4, 8, 8, 4, 4, 4, 4, 4
 };
 
-void suonaBuzzerFelice(){
+void playHappyBuzzer(){
     for (int thisNote = 0; thisNote < 8; thisNote++) {
       int noteDuration = 1000 / noteDurations[thisNote];
       tone(BUZZER_PIN, melody[thisNote], noteDuration);
@@ -19,7 +19,7 @@ void suonaBuzzerFelice(){
     }
   
   }
-  void suonaBuzzerTriste() {
+  void playSadBuzzer() {
     tone(BUZZER_PIN, 880, 500);  // La5
     delay(600);
     tone(BUZZER_PIN, 698, 500);  // Fa5
