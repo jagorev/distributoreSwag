@@ -2,6 +2,22 @@
 
 Welcome to the **distributore Swag** repository! This project manages a water dispenser controlled via an ESP32.
 
+## 🗂️ Index
+- [Requirements](#📈-requirements)
+  - [Hardware](#hardware)
+  - [Software](#software)
+- [Project Tree Organization](#🌲-project-tree-organization)
+- [Getting Started](#💪-getting-started)
+  - [How to Build the Project](#how-to-build-the-project)
+  - [How to Burn and Run the Project](#how-to-burn-and-run-the-project)
+- [Proejct diagram and user guide](#📝-project-diagram-and-user-guide)
+  - [distributoreSwag Workflow](#⚙️-distributoreswag-workflow)
+- [Things to improve](#🔧-things-to-improve)
+- [Presentation and Videos](#🎥-presentation-and-youtube-video)
+- [Team Members](#🧑‍🧑‍🧒‍🧒-team-members)
+
+---
+
 ## 📈 Requirements
 ### Hardware
 ESP32 and relative sensors: 
@@ -85,7 +101,7 @@ To run the project, just click on the RST button on the ESP32.
 ## 📝 Project diagram and user guide
 <img src="Project design.jpeg" alt="My Image" width="600">
 
-### ⚙️ DistributoreSwag Workflow
+### ⚙️ distributoreSwag Workflow
 #### 1. Ready State  
 - The system is powered on and enters the **ready** state.  
 - The ESP32 is set as an AP. Wi-fi is now ready.  
