@@ -54,7 +54,7 @@ VS Code with Platform IO.
 │   └── main.cpp
 ```
 
-## Getting started
+## 💪 Getting started
 ### How to build the project
 You can either clone this repository via terminal
 ``` bash
@@ -82,7 +82,7 @@ alternatively, click on the → in the bottom bar.
 
 To run the project, just click on the RST button on the ESP32.
 
-## Project diagram and user guide
+## 📝 Project diagram and user guide
 <img src="Project design.jpeg" alt="My Image" width="600">
 
 ### ⚙️ DistributoreSwag Workflow
