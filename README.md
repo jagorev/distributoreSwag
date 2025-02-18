@@ -7,25 +7,6 @@ Benvenuto nella repository del **Distributore Swag**! Questo progetto si occupa 
 - [ ] Capire come gestire dignitosamente la questione del famigerato valore 9086 del servomotore
 - [ ] Mettere più bevande
 - [ ] Mettere la visione "live" della percentuale d'acqua nel sito e diplay
- 
-## ✅ To-Do List
-
-- [x] Trovare il tappo necessario o individuare una soluzione alternativa *(es. utilizzo di una pompa, taglio diagonale di un tubo con regolazione del flusso tramite foglio di plastica trasparente, ...)*
-- [x] Capire bene come funziona il modulo WiFi, inclusi HTTP e protocolli di comunicazione
-- [ ] Capire come gestire gli interrupt con ESP32
-- [x] Iniziare a progettare la realizzazione pratica del sistema
-- [x] Dividerci il lavoro nella pratica
-
-## ✏️ Schema
-<img src="Schema.png" alt="Alt text" width="300">
-
-## 📌 Cose Utili
-
-Ecco alcuni link utili per il progetto:
-
-- 🎥 **Collegamento tappo servo:** [Guarda il video](https://youtu.be/ywjtrN_QuFI) [Guarda il video](https://www.youtube.com/shorts/YKhZU1_dNQs) [Ricerca Amazon](https://www.amazon.it/s?k=tappo+erogatore+tanica&__mk_it_IT=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=3QHH02E7DG4O3&sprefix=tappo+erogatore+tanic%2Caps%2C174&ref=nb_sb_noss_2)
-- 🔗 **Guida HTTP ↔ ESP32:** [Leggi l'articolo](https://randomnerdtutorials.com/esp32-servo-motor-web-server-arduino-ide/)
-- ⚠️ **Come gestire gli interrupts:** [Leggi l'articolo](https://lastminuteengineers.com/handling-esp32-gpio-interrupts-tutorial/)
 
 
 ## ⚙️ Workflow del DistributoreSwag
@@ -60,13 +41,13 @@ Ecco alcuni link utili per il progetto:
   - Il display mostrerà **"RESET"** e **STATUS_LED sarà 🔴 (ROSSO) per qualche secondo**.
   - Il sistema tornerà allo **stato 1**.
 
-### 🛠️ Strumenti
+## 🛠️ Strumenti
 
 Inoltre, si pensava di usare **PlatformIO** su VS Code per la programmazione delle ESP32 e **GitHub** per la condivisione e la collaborazione sul codice.
 
 Usando Git e GitHub possiamo sfruttare l’estensione per VS Code che permette di caricare i cambiamenti direttamente su GitHub (da VS Code), senza fare 8000 giri inutili.
 
-### 🌲 Tree
+## 🌲 Tree
 ```plaintext
 .
 ├── README.md
