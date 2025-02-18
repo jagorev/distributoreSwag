@@ -2,7 +2,7 @@
 #define BUZZER_H
 
 #include <Arduino.h>
-#define BUZZER_PIN 16
+#define BUZZER_PIN 32
 
 void playHappyBuzzer();
 void playSadBuzzer();
