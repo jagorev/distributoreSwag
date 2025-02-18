@@ -29,7 +29,7 @@ ESP32 and relative sensors:
   - Microservo 9G SG90 5V
   - Breadboard, cables and resistors
 ### Software 
-VS Code with Platform IO.
+VS Code with the PlatformIO extension.
 ## 🌲 Project tree organization
 ```plaintext
 .
