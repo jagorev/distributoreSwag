@@ -2,7 +2,7 @@
 
 Welcome to the **distributore Swag** repository! This project manages a water dispenser controlled via an ESP32.
 
-## 🗂️ Index
+## 🗂️ Table of contents
 - [Requirements](#📈-requirements)
   - [Hardware](#hardware)
   - [Software](#software)
