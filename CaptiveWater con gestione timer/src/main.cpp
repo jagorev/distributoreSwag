@@ -41,8 +41,8 @@ void setup()
   //Set up the ESP as an Access Point
   WiFi.mode(WIFI_AP);
   WiFi.softAP(ssid, password, random(1, 12), 0, 1); // Create an open network with a random channel and max clients = 1
-  Serial.print("AP IP address: "); // Print the IP address of the AP
-  Serial.println(WiFi.softAPIP());
+  Serial.print("AP IP address: "); 
+  Serial.println(WiFi.softAPIP()); // Print the IP address of the AP
 
   //set up the Async Web Server, this way we can handle the requests from the captive portal
   setupServer();
@@ -75,24 +75,24 @@ void loop()
     isChoiceMade = false;
   }
 
-  else if (!isChoiceMade)
+  else if (!isChoiceMade) // If the client has connected, but the choice has not been made yet
   {
     rgb(255, 0, 255);
     writeToDisplay("Connected:                ", "choose size                ");
     delay(100);
   }
 
-  dnsServer.processNextRequest();
+  dnsServer.processNextRequest(); // Process the next DNS request
 
-  if (isChoiceMade)
+  if (isChoiceMade) 
   {
     float distance = getDistance();
-    if (distance >= MIN_DISTANCE && distance <= MAX_DISTANCE)
+    if (distance >= MIN_DISTANCE && distance <= MAX_DISTANCE) // If the distance is within the range
     {
       writeToDisplay("Water bottle                 ", "detected                ");
-      activateWaterRelease();
+      activateWaterRelease(); 
     }
-    else if (distance <= MIN_DISTANCE || distance >= MAX_DISTANCE)
+    else if (distance <= MIN_DISTANCE || distance >= MAX_DISTANCE) // If the distance is out of range
     {
       writeToDisplay("Insert the                ", "water bottle                ");
       stopWaterRelease();

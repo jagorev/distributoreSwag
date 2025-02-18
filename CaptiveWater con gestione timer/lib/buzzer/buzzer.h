@@ -7,5 +7,4 @@
 void playHappyBuzzer();
 void playSadBuzzer();
 
-
 #endif // BUZZER_H

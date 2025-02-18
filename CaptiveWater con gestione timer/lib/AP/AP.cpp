@@ -6,6 +6,7 @@ AsyncWebServer server(80);
 char *ssid = "distributoreSwag";
 char *password = NULL;
 
+// main web site page
 char index_html[] PROGMEM = R"rawliteral(
     <!DOCTYPE html>
     <html lang="en">
@@ -81,7 +82,7 @@ char index_html[] PROGMEM = R"rawliteral(
     </html>
     )rawliteral";
 
-
+// landing page after the choice has been made
 char landing_html[] PROGMEM = R"rawliteral(
     <!DOCTYPE html>
     <html lang="it">
@@ -125,52 +126,53 @@ char landing_html[] PROGMEM = R"rawliteral(
     
     )rawliteral";
 
-// VARIABILI PER GESTIONE SCELTA ACQUA
+// variables for managing the choice of the water size
 bool isChoiceMade = false;
 AcquaSize chosenSize;
 
-void refreshAP(){
+// function to disconnect the clients connected to the AP and swaffle the AP channel
+void refreshAP()
+{
     WiFi.softAPdisconnect();
-    WiFi.softAP(ssid, password, random(1,12), 0, 1);
+    WiFi.softAP(ssid, password, random(1, 12), 0, 1);
 }
 
+// managing the request for the captive portal
 class CaptiveRequestHandler : public AsyncWebHandler
 {
 public:
-  CaptiveRequestHandler() {}
-  virtual ~CaptiveRequestHandler() {}
+    CaptiveRequestHandler() {}
+    virtual ~CaptiveRequestHandler() {}
 
-  // ritorna true se la richiesta può essere gestita da questo gestore (sempre)
-  bool canHandle(AsyncWebServerRequest *request)
-  {
-    // request->addInterestingHeader("ANY");
-    return true;
-  }
+    // this function returns true for all the requests
+    bool canHandle(AsyncWebServerRequest *request)
+    {
+        return true;
+    }
 
-  // è quella parte di programma che effettivamente manda ciò che verrà aperto dal captive portal (ossia index_html)
-  void handleRequest(AsyncWebServerRequest *request)
-  {
-    request->send_P(200, "text/html", index_html);
-  }
+    // this function is the one that actually sends what will be opened by the captive portal (i.e. index_html)
+    void handleRequest(AsyncWebServerRequest *request)
+    {
+        request->send_P(200, "text/html", index_html);
+    }
 };
-
 
 void setupServer()
 {
-  // in caso di richiesta di apertura della root page
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-            {
+    // if the client connects to the root of the server, send the index_html
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
       request->send_P(200, "text/html", index_html); 
       isChoiceMade=false;
       Serial.println("Client Connected"); });
 
-  // in caso di form submission
-  server.on("/get", HTTP_GET, [](AsyncWebServerRequest *request)
-            {
+    // in case the client connects to /get through a form submission, send the landing_html and save the choice
+    server.on("/get", HTTP_GET, [](AsyncWebServerRequest *request)
+              {
       String inputMessage;
       String inputParam;
-      //nota che i parametri sono quelli che sono stati nominati nella parte HTML
-      //quindi, devo fare riferimento ai loro nomi per estrarli
+
+      // note that the parameters are the ones that have been named in the HTML part, so we have to refer to their names to extract them
       if (request->hasParam("bottle")) {
         inputMessage = request->getParam("bottle")->value();
         inputParam = "bottle";
@@ -180,4 +182,3 @@ void setupServer()
       }   
       request->send(200, "text/html", landing_html); });
 }
-

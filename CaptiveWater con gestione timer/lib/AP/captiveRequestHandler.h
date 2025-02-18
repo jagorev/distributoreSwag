@@ -5,7 +5,7 @@
 #include <ESPAsyncWebServer.h>
 #include "AP.h"
 
-// Dichiarazione della classe
+// managing the request for the captive portal
 class CaptiveRequestHandler : public AsyncWebHandler
 {
 public:

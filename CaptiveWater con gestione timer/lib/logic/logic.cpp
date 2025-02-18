@@ -4,40 +4,39 @@ bool isPouring = false;
 
 void terminateWaterRelease()
 {
-    resetTimer();
+    resetTimer(); // so the system can start counting again
     writeToDisplay("Water dispensing                ", "finished               ");
     isPouring = false;
     rgb(255, 255, 255);
-    // delay(3000);
     closeServo();
     isChoiceMade = false;
 
-    // stacco i client connessi
+    // disconnect connected clients
     refreshAP();
 
+    // play a happy sound to notify the end of the dispensing
     playHappyBuzzer();
     delay(5000);
 
+    // restart the ESP so that we can go back to step 1
     esp_restart();
 }
 
 void activateWaterRelease()
 {
-    Serial.print("Chosen size:  ");
-    Serial.println(chosenSize);
-
     if (getElapsedTime() == 0)
-    { // Se il tempo trascorso è 0, allora il timer non è mai partito
+    { // If the timer is not running, start it
         startTimer();
     }
     else if (!timerRunning)
-    { // se il timer non è attivo lo riavvia
+    { // if the timer is not running, restart it
         restartTimer();
     }
-    switch (chosenSize)
+
+    switch (chosenSize) // Check the chosen size: different times for different sizes
     {
     case cl25:
-        if (getElapsedTime() >= TEMPO_25CL - elapsedTime)
+        if (getElapsedTime() >= TEMPO_25CL - elapsedTime) // If the time has passed, stop the dispensing
         {
             terminateWaterRelease();
         }
@@ -64,35 +63,35 @@ void activateWaterRelease()
         break;
     }
 
-    Serial.print("Erogazione in corso");
-    Serial.println(servo.read());
+    Serial.print("Pouring in progress, time elapsed (from last timer stop): ");
     Serial.println(getElapsedTime());
     isPouring = true;
-    // tempoInizioErogazione = millis();
-    rgb(0, 255, 0); // LED Verde
+    rgb(0, 255, 0); // Green LED
 
+    // If the servo is not in the right position (plus or minus an offset), move it
     if (servo.read() < OPENED_SERVO - 10)
     {
-        openServo(); // Posizione per apertura valvola
+        openServo(); // Opens the dispenser
         delay(50);
     }
 }
 
 void stopWaterRelease()
 {
-    Serial.print("Erogazione non in corso  ");
+    Serial.print("Stopped pouring, time elapsed: ");
     Serial.print(elapsedTime);
-    // Serial.println(servo.read());
     isPouring = false;
-    rgb(255, 255, 0); // LED Giallo
+    rgb(255, 255, 0); // Yellow led
+
     if (timerRunning)
     {
         stopTimer();
     }
 
+    // If the servo is not in the right position (plus or minus an offset), move it
     if (servo.read() > CLOSED_SERVO + 10)
     {
-        closeServo(); // Chiude l'erogatore
+        closeServo(); // close servo
 
         delay(50);
     }

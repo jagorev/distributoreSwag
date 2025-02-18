@@ -7,7 +7,6 @@
 #include "buzzer.h"
 #include "AP.h"
 
-
 #define BUTTON 25
 
 extern int buttonTime;
@@ -15,6 +14,5 @@ extern int lastButtonTime;
 extern bool emergencyTriggered;
 
 void managingEmergency();
-//void IRAM_ATTR isr();
 
 #endif

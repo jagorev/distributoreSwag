@@ -23,13 +23,11 @@ extern char *password;
 extern char index_html[] PROGMEM;
 extern char landing_html[] PROGMEM;
 
-// VARIABILI PER GESTIONE SCELTA ACQUA
+// variables for managing the choice of the water size
 extern bool isChoiceMade;
 extern AcquaSize chosenSize;
 
-
 void refreshAP();
 void setupServer();
-
 
 #endif
