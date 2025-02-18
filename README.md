@@ -3,18 +3,18 @@
 Welcome to the **distributore Swag** repository! This project manages a water dispenser controlled via an ESP32.
 
 ## 🗂️ Table of contents
-- [Requirements](#📈-requirements)
+- [Requirements](#-requirements)
   - [Hardware](#hardware)
   - [Software](#software)
-- [Project Tree Organization](#🌲-project-tree-organization)
-- [Getting Started](#💪-getting-started)
+- [Project Tree Organization](#-project-tree-organization)
+- [Getting Started](#-getting-started)
   - [How to Build the Project](#how-to-build-the-project)
   - [How to Burn and Run the Project](#how-to-burn-and-run-the-project)
-- [Proejct diagram and user guide](#📝-project-diagram-and-user-guide)
-  - [distributoreSwag Workflow](#⚙️-distributoreswag-workflow)
-- [Things to improve](#🔧-things-to-improve)
-- [Presentation and Videos](#🎥-presentation-and-youtube-video)
-- [Team Members](#🧑‍🧑‍🧒‍🧒-team-members)
+- [Proejct diagram and user guide](#-project-diagram-and-user-guide)
+  - [distributoreSwag Workflow](#⚙-distributoreswag-workflow)
+- [Things to improve](#-things-to-improve)
+- [Presentation and Videos](#-presentation-and-youtube-video)
+- [Team Members](#-team-members)
 
 ---
 
