@@ -60,34 +60,53 @@ Ecco alcuni link utili per il progetto:
   - Il display mostrerà **"RESET"** e **STATUS_LED sarà 🔴 (ROSSO) per qualche secondo**.
   - Il sistema tornerà allo **stato 1**.
 
-
-
-## 📅 Recap 4/2/2025
-
-Giulio e Jago si sono trovati per:
-- Test del funzionamento del **LED RGB** *(ne abbiamo solo uno, quindi occhio a non bruciarlo!)*
-- Valutazione dei sensori di prossimità: il **sensore a ultrasuoni** sembra molto più preciso di quello a infrarossi
-- Stesura del **documento di funzionamento generale** (`workflow.md`, ma è lo stesso che c'è [qui](https://github.com/renna3/distributoreSwag/tree/main#%EF%B8%8F-workflow-del-distributoreswag)), cercando di ripercorrere tutto il ciclo operativo del dispenser in stile macchina a stati
-- Ricerca di informazioni sul **tipo di tappo** da utilizzare *(vedi link nella pagina principale della repository GitHub)*
-
-Si è discusso inoltre della **suddivisione del lavoro** basandoci sulle sezioni del documento di funzionamento generale.
-
-
-## 📅 Recap 3/2/2025
-
-Jago e Giulio si sono trovati per provare a vedere il funzionamento dei sensori vari (e mettere su GitHub i relativi codici pronti per essere usati), in particolare:
-
-- **Display** (per mostrare la percentuale di riempimento)
-- **Buzzer** (per emettere il suono di quando si finisce di riempire la borraccia)
-- **Servo motore** (per tirare un filetto che aprirà la tanica —> dobbiamo ancora ben capire come gestire sta cosa, ma c’è un video nella pagina principale della nostra repository di un tipo che l’ha fatto)
-- **Sensore di distanza ad infrarossi** (per vedere se la borraccia è sufficientemente vicina). C’è da capire se usare questo oppure quello a ultrasuoni (che abbiamo).
-
 ### 🛠️ Strumenti
 
 Inoltre, si pensava di usare **PlatformIO** su VS Code per la programmazione delle ESP32 e **GitHub** per la condivisione e la collaborazione sul codice.
 
 Usando Git e GitHub possiamo sfruttare l’estensione per VS Code che permette di caricare i cambiamenti direttamente su GitHub (da VS Code), senza fare 8000 giri inutili.
 
-### 🚀 Prossimi Passi
-
-Comunque, si pensava di farvi vedere dal vivo tutta sta roba (sia i sensori, che la configurazione di GitHub e PlatformIO su VS Code) così che possiamo effettivamente metterci mano tutti quanti partendo dalla stessa base.
+### 🌲 Tree
+```plaintext
+.
+├── README.md
+├── include
+│   └── README
+├── lib
+│   ├── AP
+│   │   ├── AP.cpp
+│   │   ├── AP.h
+│   │   ├── captiveRequestHandler.cpp
+│   │   └── captiveRequestHandler.h
+│   ├── README
+│   ├── button
+│   │   ├── button.cpp
+│   │   └── button.h
+│   ├── buzzer
+│   │   ├── buzzer.cpp
+│   │   ├── buzzer.h
+│   │   └── pitches.h
+│   ├── display
+│   │   ├── display.cpp
+│   │   └── display.h
+│   ├── logic
+│   │   ├── logic.cpp
+│   │   └── logic.h
+│   ├── rgb
+│   │   ├── rgb.cpp
+│   │   └── rgb.h
+│   ├── servo
+│   │   ├── servo.cpp
+│   │   └── servo.h
+│   ├── timerControl
+│   │   ├── timerControl.cpp
+│   │   └── timerControl.h
+│   └── ultrasound
+│       ├── ultrasound.cpp
+│       └── ultrasound.h
+├── platformio.ini
+├── src
+│   └── main.cpp
+└── test
+    └── README
+```
