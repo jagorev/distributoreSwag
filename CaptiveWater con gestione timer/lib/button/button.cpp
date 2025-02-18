@@ -7,7 +7,7 @@ bool emergencyTriggered = false;
 
 void managingEmergency(){
     emergencyTriggered = false; // Reset flag
-    scriviDisplay("Emergenza!                ", "Riavvio in corso...                ");
+    writeToDisplay("Emergency!                ", "Rebooting...                ");
     rgb(255, 0, 0);
     closeServo();
   

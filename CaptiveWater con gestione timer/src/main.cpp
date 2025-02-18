@@ -12,6 +12,7 @@
 #include "timerControl.h"
 #include "logic.h"
 
+//interrupt service routine function
 void IRAM_ATTR isr()
 {
   buttonTime = millis();
@@ -25,77 +26,76 @@ void IRAM_ATTR isr()
 
 void setup()
 {
-  // your other setup stuff...
+  //Initialize Serial port
   Serial.begin(115200);
-  pinMode(BUTTON, INPUT_PULLUP);
-  attachInterrupt(BUTTON, isr, FALLING);
 
-  // // Initialize the output variables as outputs
+  //Specify the pin modes
+  pinMode(BUTTON, INPUT_PULLUP);
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
   pinMode(BUZZER_PIN, OUTPUT);
 
-  Serial.println("Setting up AP Mode");
+  //Attach the interrupt for the button pressing event
+  attachInterrupt(BUTTON, isr, FALLING);
+
+  //Set up the ESP as an Access Point
   WiFi.mode(WIFI_AP);
-  WiFi.softAP(ssid, password, random(1, 12), 0, 1);
-  Serial.print("AP IP address: ");
+  WiFi.softAP(ssid, password, random(1, 12), 0, 1); // Create an open network with a random channel and max clients = 1
+  Serial.print("AP IP address: "); // Print the IP address of the AP
   Serial.println(WiFi.softAPIP());
 
-  Serial.println("Setting up Async WebServer");
+  //set up the Async Web Server, this way we can handle the requests from the captive portal
   setupServer();
 
-  Serial.println("Starting DNS Server");
-  dnsServer.start(53, "*", WiFi.softAPIP());
+  //set up the DNS server, this way we can redirect all the requests to the captive portal
+  dnsServer.start(53, "*", WiFi.softAPIP()); // redirect all requests to the captive portal (AP IP)
   server.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER); // only when requested from AP
-
-  // more handlers...
   server.begin();
-  Serial.println("All Done!");
 
-  // SET UP DISPLAY
+  //Set up the display
   lcd.init();      // Initialize the LCD
   lcd.backlight(); // Turn on the LCD backlight
-
-  // closeServo();
 }
 
 void loop()
 {
+  //Check if the emergency button has been pressed (emergencyTriggered is set as true by the ISR defined above)
   if (emergencyTriggered)
   {
     managingEmergency();
   }
+
+  //Check if the client has connected to the AP
   int clientCount = WiFi.softAPgetStationNum();
-  // Serial.println(clientCount);
   if (clientCount == 0)
   {
     rgb(0, 0, 255);
-    scriviDisplay("Pronto                ", "collegarsi                ");
+    writeToDisplay("Ready                ", "to connect                ");
     delay(10);
-    scelta_effettuata = false;
+    isChoiceMade = false;
   }
 
-  else if (!scelta_effettuata)
+  else if (!isChoiceMade)
   {
     rgb(255, 0, 255);
-    scriviDisplay("Connesso:                ", "scegli taglia                ");
+    writeToDisplay("Connected:                ", "choose size                ");
     delay(100);
   }
 
   dnsServer.processNextRequest();
 
-  if (scelta_effettuata)
+  if (isChoiceMade)
   {
     float distance = getDistance();
     if (distance >= MIN_DISTANCE && distance <= MAX_DISTANCE)
     {
-      scriviDisplay("Borraccia                 ", "rilevata                ");
-      erogaErogazione();
+      writeToDisplay("Water bottle                 ", "detected                ");
+      activateWaterRelease();
     }
     else if (distance <= MIN_DISTANCE || distance >= MAX_DISTANCE)
     {
-      scriviDisplay("Metti la                ", "borraccia                ");
-      interrompiErogazione();
+      writeToDisplay("Insert the                ", "water bottle                ");
+      stopWaterRelease();
     }
   }
 }

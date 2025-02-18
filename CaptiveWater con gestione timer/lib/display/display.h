@@ -9,6 +9,6 @@
 
 extern LiquidCrystal_I2C lcd;
 
-void scriviDisplay(String linea1, String linea2);
+void writeToDisplay(String linea1, String linea2);
 
 #endif

@@ -126,8 +126,8 @@ char landing_html[] PROGMEM = R"rawliteral(
     )rawliteral";
 
 // VARIABILI PER GESTIONE SCELTA ACQUA
-bool scelta_effettuata = false;
-AcquaSize acqua_scelta;
+bool isChoiceMade = false;
+AcquaSize chosenSize;
 
 void refreshAP(){
     WiFi.softAPdisconnect();
@@ -161,7 +161,7 @@ void setupServer()
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
             {
       request->send_P(200, "text/html", index_html); 
-      scelta_effettuata=false;
+      isChoiceMade=false;
       Serial.println("Client Connected"); });
 
   // in caso di form submission
@@ -174,9 +174,9 @@ void setupServer()
       if (request->hasParam("bottle")) {
         inputMessage = request->getParam("bottle")->value();
         inputParam = "bottle";
-        acqua_scelta = (AcquaSize)inputMessage.toInt();
+        chosenSize = (AcquaSize)inputMessage.toInt();
         Serial.println(inputMessage);
-        scelta_effettuata = true;
+        isChoiceMade = true;
       }   
       request->send(200, "text/html", landing_html); });
 }

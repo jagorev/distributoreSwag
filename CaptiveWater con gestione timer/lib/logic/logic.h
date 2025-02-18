@@ -11,8 +11,8 @@
 
 extern bool isPouring;
 
-void erogazioneFinita();
-void erogaErogazione();
-void interrompiErogazione();
+void terminateWaterRelease();
+void activateWaterRelease();
+void stopWaterRelease();
 
 #endif

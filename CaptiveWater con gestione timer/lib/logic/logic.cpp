@@ -2,15 +2,15 @@
 
 bool isPouring = false;
 
-void erogazioneFinita()
+void terminateWaterRelease()
 {
     resetTimer();
-    scriviDisplay("Finita                ", "l'erogazione               ");
+    writeToDisplay("Water dispensing                ", "finished               ");
     isPouring = false;
     rgb(255, 255, 255);
     // delay(3000);
     closeServo();
-    scelta_effettuata = false;
+    isChoiceMade = false;
 
     // stacco i client connessi
     refreshAP();
@@ -21,10 +21,10 @@ void erogazioneFinita()
     esp_restart();
 }
 
-void erogaErogazione()
+void activateWaterRelease()
 {
-    Serial.print("Acqua scelta:  ");
-    Serial.println(acqua_scelta);
+    Serial.print("Chosen size:  ");
+    Serial.println(chosenSize);
 
     if (getElapsedTime() == 0)
     { // Se il tempo trascorso è 0, allora il timer non è mai partito
@@ -34,30 +34,30 @@ void erogaErogazione()
     { // se il timer non è attivo lo riavvia
         restartTimer();
     }
-    switch (acqua_scelta)
+    switch (chosenSize)
     {
     case cl25:
         if (getElapsedTime() >= TEMPO_25CL - elapsedTime)
         {
-            erogazioneFinita();
+            terminateWaterRelease();
         }
         break;
     case cl33:
         if (getElapsedTime() >= TEMPO_33CL - elapsedTime)
         {
-            erogazioneFinita();
+            terminateWaterRelease();
         }
         break;
     case cl50:
         if (getElapsedTime() >= TEMPO_50CL - elapsedTime)
         {
-            erogazioneFinita();
+            terminateWaterRelease();
         }
         break;
     case l1:
         if (getElapsedTime() >= TEMPO_100CL - elapsedTime)
         {
-            erogazioneFinita();
+            terminateWaterRelease();
         }
         break;
     default:
@@ -78,7 +78,7 @@ void erogaErogazione()
     }
 }
 
-void interrompiErogazione()
+void stopWaterRelease()
 {
     Serial.print("Erogazione non in corso  ");
     Serial.print(elapsedTime);

@@ -24,8 +24,8 @@ extern char index_html[] PROGMEM;
 extern char landing_html[] PROGMEM;
 
 // VARIABILI PER GESTIONE SCELTA ACQUA
-extern bool scelta_effettuata;
-extern AcquaSize acqua_scelta;
+extern bool isChoiceMade;
+extern AcquaSize chosenSize;
 
 
 void refreshAP();
