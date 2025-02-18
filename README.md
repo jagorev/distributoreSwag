@@ -1,4 +1,4 @@
-# 🛍️ DistributoreSwag  
+# 🛍️ distributoreSwag  
 
 Welcome to the **Distributore Swag** repository! This project manages a water dispenser controlled via an ESP32.
 
