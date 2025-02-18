@@ -22,13 +22,7 @@ void closeServo()
     {
       servo.write(posDegrees);
       delay(5);
-    }
-    {
-      servo.write(posDegrees);
-      Serial.println(servo.read());
-      delay(5);
-    }
-  
+    }  
   }
   servo.detach();
 }

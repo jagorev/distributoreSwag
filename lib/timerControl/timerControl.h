@@ -3,10 +3,10 @@
 
 #include <Arduino.h>
 
-#define TEMPO_25CL 10000
-#define TEMPO_33CL 15000
-#define TEMPO_50CL 20000
-#define TEMPO_100CL 40000
+#define TEMPO_25CL 5000
+#define TEMPO_33CL 7500
+#define TEMPO_50CL 10000
+#define TEMPO_100CL 20000
 
 extern int startTime;
 extern int elapsedTime;
