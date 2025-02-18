@@ -126,6 +126,10 @@ To run the project, just click on the RST button on the ESP32.
 
 ## 🎥 Presentation and YouTube video
 
+- [PowerPoint Presentation](https://docs.google.com/presentation/d/e/2PACX-1vS-GR5psc4e1slVNtSljMum9-SnUjQ5HM3ZVUodAPan2S7EgswZP48_drh9byah6N4qXjoTggb7KE40/pub?start=false&loop=false&delayms=3000)
+- [YouTube Pitch Video]()
+- [PDF Presentation](Presentation.pdf)
+
 ## 🧑‍🧑‍🧒‍🧒 Team members
 - [Giulia Garonzi](https://github.com/GiuliaGa03): designed step 3, built the dispenser, made pitch video and presentation
 - [Giulio Gualtiero](https://github.com/GiulioGualtiero): designed step 1 and 2, built the dispenser, overviewed cable management and sensors interaction
