@@ -1,65 +1,29 @@
-# 🛍️ DistributoreSwag
+# 🛍️ DistributoreSwag  
 
-Benvenuto nella repository del **Distributore Swag**! Questo progetto si occupa della gestione di un distributore d'acqua, controllato tramite un ESP32 e un servo motore.
+Welcome to the **Distributore Swag** repository! This project manages a water dispenser controlled via an ESP32.
 
-## 🔧 Cose da migliorare
-- [ ] Disconnettere i client automaticamente appena finisce l'erogazione (o c'è un'emergenza)
-- [ ] Capire come gestire dignitosamente la questione del famigerato valore 9086 del servomotore
-- [ ] Mettere più bevande
-- [ ] Mettere la visione "live" della percentuale d'acqua nel sito e diplay
-
-
-## ⚙️ Workflow del DistributoreSwag
-
-#### 1. Stato di Pronto
-- Il sistema viene collegato e si entra nello stato di **pronto**.
-- Vengono effettuati i controlli generali: verifica che i sensori non abbiano ostacoli e che la parte WiFi sia pronta.
-- Il display mostrerà: **"PRONTO. COLLEGARSI AL WIFI SWAG"**.
-- **STATUS_LED:** 🔵 (BLU).
-
-#### 2. Connessione e Selezione Quantità
-- L'utente si collega al WiFi del distributore tramite il telefono e scannerizza il QR per accedere alla pagina locale del distributore.
-- Seleziona la quantità di acqua da erogare (**0.2L, 0.33L, 0.5L, 1L**).
-- **STATUS_LED:** 🟣 (VIOLA) quando un dispositivo si connette.
-- **STATUS_LED:** 🟡 (GIALLO) quando la scelta è stata effettuata.
-
-#### 3. Controllo della Borraccia ed Erogazione
-- Il sensore di prossimità verifica se la borraccia è posizionata correttamente.
-- Se la borraccia è inserita e alla giusta distanza, inizia l'erogazione e **STATUS_LED sarà 🟢 (VERDE)**.
-- Se la borraccia viene rimossa durante l'erogazione:
-  - **STATUS_LED sarà 🟡 (GIALLO)**.
-  - Il sistema si ricorderà il livello di erogazione e riprenderà quando la borraccia sarà di nuovo in posizione.
-
-#### 4. Fine del Processo
-- **Scenario 1:**
-  - L'acqua è stata erogata correttamente.
-  - Il display mostrerà **"FINITO"** e il buzzer suonerà.
-  - Il sistema tornerà allo **stato 1**.
-- **Scenario 2:**
-  - L'utente preme il pulsante **STOP**.
-  - Il sistema si interrompe immediatamente, indipendentemente dallo stato attuale.
-  - Il display mostrerà **"RESET"** e **STATUS_LED sarà 🔴 (ROSSO) per qualche secondo**.
-  - Il sistema tornerà allo **stato 1**.
-
-## 🛠️ Strumenti
-
-Inoltre, si pensava di usare **PlatformIO** su VS Code per la programmazione delle ESP32 e **GitHub** per la condivisione e la collaborazione sul codice.
-
-Usando Git e GitHub possiamo sfruttare l’estensione per VS Code che permette di caricare i cambiamenti direttamente su GitHub (da VS Code), senza fare 8000 giri inutili.
-
-## 🌲 Tree
+## 📈 Requirements
+### Hardware
+ESP32 and relative sensors: 
+  - Buzzer
+  - Display LCD 1602 with I2C module
+  - RGB LED
+  - Button
+  - Ultrasonic HC-SR04 sensor
+  - Microservo 9G SG90 5V
+  - Breadboard, cables and resistors
+### Software 
+VS Code with Platform IO.
+## 🌲 Project tree organization
 ```plaintext
 .
 ├── README.md
-├── include
-│   └── README
 ├── lib
 │   ├── AP
 │   │   ├── AP.cpp
 │   │   ├── AP.h
 │   │   ├── captiveRequestHandler.cpp
 │   │   └── captiveRequestHandler.h
-│   ├── README
 │   ├── button
 │   │   ├── button.cpp
 │   │   └── button.h
@@ -88,6 +52,85 @@ Usando Git e GitHub possiamo sfruttare l’estensione per VS Code che permette d
 ├── platformio.ini
 ├── src
 │   └── main.cpp
-└── test
-    └── README
 ```
+
+## Getting started
+### How to build the project
+You can either clone this repository via terminal
+``` bash
+git clone https://github.com/renna3/distributoreSwag.git
+```
+or download the project folder.  
+
+Then, using VS Code with the PlatformIO extension, open the project (PlatformIO Home Page --> Open Project). 
+
+Ultimately, using the terminal inside VS Code, proceed to build the project
+``` sh
+platformio run
+```
+alternatively, click on the ✔️ in the bottom bar.
+
+### How to burn and run the project
+
+First, you need to connect the ESP32 to the computer.  
+
+Then, proceed by uploading the built project through the terminal inside VS Code (specifying the target port)
+``` sh
+pio run --target upload
+```
+alternatively, click on the → in the bottom bar.
+
+To run the project, just click on the RST button on the ESP32.
+
+## Project diagram and user guide
+<img src="Project design.jpeg" alt="My Image" width="600">
+
+### ⚙️ DistributoreSwag Workflow
+#### 1. Ready State  
+- The system is powered on and enters the **ready** state.  
+- The ESP32 is set as an AP. Wi-fi is now ready.  
+- The display will show: **"Ready to connect"**.  
+- **STATUS_LED:** 🔵 (BLUE).  
+
+#### 2. Connection and Quantity Selection  
+- The user connects to the dispenser’s WiFi via their phone and scans the QR code to access the local dispenser page.  
+- They select the amount of water to dispense (**0.2L, 0.33L, 0.5L, 1L**).  
+- **STATUS_LED:** 🟣 (PURPLE) when a device connects.  
+- **STATUS_LED:** 🟡 (YELLOW) when a selection is made.  
+
+#### 3. Bottle Detection and Dispensing  
+- The proximity sensor checks if the bottle is correctly positioned.  
+- If the bottle is placed at the correct distance, dispensing begins and **STATUS_LED turns 🟢 (GREEN)**.  
+- If the bottle is removed during dispensing:  
+  - **STATUS_LED turns 🟡 (YELLOW)**.  
+  - The system remembers the dispensing level and resumes when the bottle is repositioned.  
+
+#### 4. Process Completion  
+- **Scenario 1:**  
+  - Water has been successfully dispensed.  
+  - The display will show **"Water dispensing finished"**, and the buzzer will sound.  
+  - The system returns to **step 1**.  
+- **Scenario 2:**  
+  - The user presses the **STOP** button.  
+  - The system immediately halts, regardless of the current state.  
+  - The display will show **"Emergency! Rebooting..."**, and **STATUS_LED turns 🔴 (RED) for a few seconds**.  
+  - The system returns to **step 1**.  
+
+
+
+## 🔧 Things to Improve  
+- [ ] Add more beverages
+- [ ] Add temperature options
+- [ ] Show in the display the live percentage of water erogated 
+- [ ] Notify users of leaks or maintenance needs, for example when dispenser need to be refilled
+
+## 🎥 Presentation and YouTube video
+
+## 🧑‍🧑‍🧒‍🧒 Team members
+- [Giulia Garonzi](https://github.com/GiuliaGa03): designed step 3, built the dispenser, made pitch video and presentation
+- [Giulio Gualtiero](https://github.com/GiulioGualtiero): designed step 1 and 2, built the dispenser, overviewed cable management and sensors interaction
+- [Jago Revrenna](https://github.com/renna3): designed step 1 and 2, built the dispenser, managed code organization and work direction
+- [Elena Rubbo](https://github.com/elerub22): designed step 4, built the dispenser, made pitch video and presentation
+
+ 
+
