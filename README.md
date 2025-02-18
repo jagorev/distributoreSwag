@@ -11,7 +11,7 @@ Welcome to the **distributore Swag** repository! This project manages a water di
   - [How to Build the Project](#how-to-build-the-project)
   - [How to Burn and Run the Project](#how-to-burn-and-run-the-project)
 - [Proejct diagram and user guide](#-project-diagram-and-user-guide)
-  - [distributoreSwag Workflow](#-distributoreswag-workflow)
+  - [distributoreSwag Workflow](#%EF%B8%8F-distributoreswag-workflow)
 - [Things to improve](#-things-to-improve)
 - [Presentation and Videos](#-presentation-and-youtube-video)
 - [Team Members](#-team-members)
