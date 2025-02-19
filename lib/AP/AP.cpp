@@ -137,26 +137,6 @@ void refreshAP()
     WiFi.softAP(ssid, password, random(1, 12), 0, 1);
 }
 
-// managing the request for the captive portal
-class CaptiveRequestHandler : public AsyncWebHandler
-{
-public:
-    CaptiveRequestHandler() {}
-    virtual ~CaptiveRequestHandler() {}
-
-    // this function returns true for all the requests
-    bool canHandle(AsyncWebServerRequest *request)
-    {
-        return true;
-    }
-
-    // this function is the one that actually sends what will be opened by the captive portal (i.e. index_html)
-    void handleRequest(AsyncWebServerRequest *request)
-    {
-        request->send_P(200, "text/html", index_html);
-    }
-};
-
 void setupServer()
 {
     // if the client connects to the root of the server, send the index_html
