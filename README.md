@@ -149,7 +149,7 @@ To run the project, just click on the RST button on the ESP32.
 ## 🧑‍🧑‍🧒‍🧒 Team members
 - [Giulia Garonzi](https://github.com/GiuliaGa03): designed step 3, built the dispenser, made pitch video and presentation
 - [Giulio Gualtiero](https://github.com/GiulioGualtiero): designed step 1 and 2, built the dispenser, overviewed cable management and sensors interaction
-- [Jago Revrenna](https://github.com/renna3): designed step 1 and 2, built the dispenser, managed code organization and work direction
+- [Jago Revrenna](https://github.com/jagorev): designed step 1 and 2, built the dispenser, managed code organization and work direction
 - [Elena Rubbo](https://github.com/elerub22): designed step 4, built the dispenser, made pitch video and presentation
 
  
