@@ -74,7 +74,7 @@ VS Code with the PlatformIO extension.
 ### How to build the project
 You can either clone this repository via terminal
 ``` bash
-git clone https://github.com/renna3/distributoreSwag.git
+git clone https://github.com/jagorev/distributoreSwag.git
 ```
 or download the project folder.  
 
